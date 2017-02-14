@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<!-- Powered by PyUntis, a Python 3 wrapper for the Untis timetable API -->
+		<!-- https://github.com/SamusAranX/PyUntis -->
+		<meta charset="utf-8">
+		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+		<title>Vertretungsplan</title>
+		<link rel="stylesheet" href="style.css">
+
+		<link rel="apple-touch-icon" href="apple-touch-icon.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="apple-touch-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180x180.png">
+		
+		<link rel="shortcut icon" href="favicon.png">
+		<script src="moment-with-locales.min.js"></script>
+		<script src="core.js"></script>
+	</head>
+	<body>
+		<header><h1></h1></header>
+		<nav>
+			<a id="nav-previous">Vorherige Woche</a>
+			<a id="nav-menu" href="#">Menü</a>
+			<a id="nav-holidays" href="#holidays">Ferien</a>
+			<a id="nav-next">Nächste Woche</a>
+		</nav>
+		
+		<div id="error">
+			<span>Irgendetwas ist schiefgelaufen. 🤒</span>
+			<span class="message"></span>
+		</div>
+		
+		<div id="loading">
+			<span>⏳ Lade Plan…</span>
+		</div>
+		
+		<div id="class-list"></div>
+		
+		<div id="holiday-list"></div>
+		
+		<div id="table-container"></div>
+
+		<noscript>
+			<div id="noscript">
+				<span>Bitte aktiviere JavaScript für diese Seite.</span>
+			</div>
+		</noscript>
+		
+		<footer>Zuletzt aktualisiert: nie</footer>
+	</body>
+</html>
