@@ -218,7 +218,7 @@ body[class="page2"] #nav-next {
 	flex-direction: column;
 	
 	margin: 1px 1px 0 1px;
-	min-width: 76px;
+	min-width: 100px;
 	
 	position: relative;
 	
@@ -282,6 +282,23 @@ body[class="page2"] #nav-next {
 	margin-top: 2px;
 }
 
+#table-container .week .days .day .timeunit.holiday {
+	display: flex;
+	flex: 1 0 auto;
+	flex-direction: column;
+	justify-content: center;
+}
+#table-container .week .days .day .timeunit.holiday span {
+	flex: 0 1 auto;
+	font-size: 1.1em;
+	transform: rotate(-90deg);
+}
+/*#table-container .week .days .day .timeunit.holiday span:after {
+	content: "Ferien";
+	display: inline-block;
+	transform: rotate(-90deg);
+}*/
+
 /* Timeunit/substitution headers and footers with start and end time */
 #table-container .week .days .day .timeunit.time {
 	border: solid 1px #183152;
@@ -289,6 +306,7 @@ body[class="page2"] #nav-next {
 	line-height: 22px;
 }
 #table-container .week .days .day .timeunit.time,
+#table-container .week .days .day .timeunit.holiday,
 #table-container .week .substitution.header.weekday {
 	background: #375d81 linear-gradient(-45deg, 
 		rgba(24,49,82,0.6) 25%, 

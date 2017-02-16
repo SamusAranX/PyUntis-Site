@@ -213,8 +213,12 @@ function fillPlan() {
 		var days_el = document.createElement("div");
 		days_el.classList.add("days");
 
-		for (var d = 0; d < week.length; d++) {
+		var weekLength = week.length;
+		for (var d = 0; d < weekLength; d++) {
 			var day = week[d];
+
+			if (typeof day == "undefined")
+				continue;
 
 			var day_el = document.createElement("div");
 			day_el.classList.add("day");
@@ -240,65 +244,85 @@ function fillPlan() {
 	
 			day_el.appendChild(day_header);
 
-			var firstLessonIndex = Math.min.apply(Math, Object.keys(day));
-			var lastLessonIndex = Math.max.apply(Math, Object.keys(day));
+			var dayKeys = Object.keys(day);
 
-			var firstLessonFound = false;
-			var timeHeaderAdded = false;
-			for (var t = 0; t < meta.timegrid[d].length; t++) {
-				var timeunit = meta.timegrid[d][t];
-				if (timeunit.startTimeUntis > lastLessonIndex)
-					continue;
+			if (dayKeys.includes("holiday")) {
+				// This is a holiday, only insert $holidayname element
+				var holiday = day["holiday"];
 
-				var lessons = day[timeunit.startTimeUntis];
 				var timeElement = document.createElement("div");
-				if(typeof lessons != "undefined") {
-					firstLessonFound = true;
-					timeElement.classList.add("timeunit", "lesson");
-					
-					for (var n = 0; n < lessons.length; n++) {
-						var lesson = lessons[n];
+				timeElement.classList.add("timeunit", "holiday");
 
-						var lesson_el = document.createElement("div");
-						lesson_el.classList.add("lesson");
-						
-						var subjectSpan = document.createElement("span");
-						subjectSpan.classList.add("subject");
-						subjectSpan.innerHTML = lesson.subject;
-						
-						var roomSpan = document.createElement("span");
-						roomSpan.classList.add("room");
-						roomSpan.innerHTML = lesson.room;
-						
-						lesson_el.appendChild(subjectSpan);
-						lesson_el.appendChild(roomSpan);
+				var holidayNameSpan = document.createElement("span");
+				holidayNameSpan.classList.add("name");
+				// holidayNameSpan.dataset["name"] = holiday["name"];
+				holidayNameSpan.innerHTML = holiday["name"];
+				
+				timeElement.appendChild(holidayNameSpan);
 
-						if (typeof lesson.code != "undefined" && lesson.code != "") {
-							//console.log(lesson.code);
-							lesson_el.classList.add(lesson.code);
-						}
-						
-						timeElement.appendChild(lesson_el);
-					}
-				} else {
-					timeElement.classList.add("timeunit", "free");
-				}
-				
-				if(firstLessonFound && !timeHeaderAdded) {
-					var startTimeUnit = document.createElement("div");
-					startTimeUnit.classList.add("timeunit", "time");
-					startTimeUnit.innerHTML = day[firstLessonIndex][0].startTimeReadable;
-					day_el.appendChild(startTimeUnit);
-					timeHeaderAdded = true;
-				}
-				
 				day_el.appendChild(timeElement);
+			} else {
+				// This is a normal school day, insert regular plan
+				var firstLessonIndex = Math.min.apply(Math, dayKeys);
+				var lastLessonIndex = Math.max.apply(Math, dayKeys);
+
+				var firstLessonFound = false;
+				var timeHeaderAdded = false;
+				for (var t = 0; t < meta.timegrid[d].length; t++) {
+					var timeunit = meta.timegrid[d][t];
+					if (timeunit.startTimeUntis > lastLessonIndex)
+						continue;
+
+					var lessons = day[timeunit.startTimeUntis];
+					var timeElement = document.createElement("div");
+					if(typeof lessons != "undefined") {
+						firstLessonFound = true;
+						timeElement.classList.add("timeunit", "lesson");
+						
+						for (var n = 0; n < lessons.length; n++) {
+							var lesson = lessons[n];
+
+							var lesson_el = document.createElement("div");
+							lesson_el.classList.add("lesson");
+							
+							var subjectSpan = document.createElement("span");
+							subjectSpan.classList.add("subject");
+							subjectSpan.innerHTML = lesson.subject;
+							
+							var roomSpan = document.createElement("span");
+							roomSpan.classList.add("room");
+							roomSpan.innerHTML = lesson.room;
+							
+							lesson_el.appendChild(subjectSpan);
+							lesson_el.appendChild(roomSpan);
+
+							if (typeof lesson.code != "undefined" && lesson.code != "") {
+								//console.log(lesson.code);
+								lesson_el.classList.add(lesson.code);
+							}
+							
+							timeElement.appendChild(lesson_el);
+						}
+					} else {
+						timeElement.classList.add("timeunit", "free");
+					}
+					
+					if(firstLessonFound && !timeHeaderAdded) {
+						var startTimeUnit = document.createElement("div");
+						startTimeUnit.classList.add("timeunit", "time");
+						startTimeUnit.innerHTML = day[firstLessonIndex][0].startTimeReadable;
+						day_el.appendChild(startTimeUnit);
+						timeHeaderAdded = true;
+					}
+					
+					day_el.appendChild(timeElement);
+				}
+				
+				var endTimeUnit = document.createElement("div");
+				endTimeUnit.classList.add("timeunit", "time");
+				endTimeUnit.innerHTML = day[lastLessonIndex][0].endTimeReadable;
+				day_el.appendChild(endTimeUnit);
 			}
-			
-			var endTimeUnit = document.createElement("div");
-			endTimeUnit.classList.add("timeunit", "time");
-			endTimeUnit.innerHTML = day[lastLessonIndex][0].endTimeReadable;
-			day_el.appendChild(endTimeUnit);
 			
 			days_el.appendChild(day_el);
 		}
