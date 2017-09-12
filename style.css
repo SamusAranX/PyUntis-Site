@@ -85,7 +85,10 @@ body[class="page2"] #table-container .week:nth-child(3) { display: flex; }
 
 
 /* "Vertretungsplan X" header */
-header h1 {
+header a {
+	color: #e1e6fa;
+}
+header a h1 {
 	height: 64px;
 	line-height: 68px;
 	margin: 0;
