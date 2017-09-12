@@ -356,7 +356,12 @@ function fillPlan() {
 			substElement.classList.add("substitution");
 			var substSpan = document.createElement("span");
 
-			substSpan.innerHTML = "Keine Vertretungen für diese Woche";
+			if ("substitutionDenied" in planJSON) {
+				substSpan.innerHTML = "Zugriff auf Vertretungen von Schule verweigert";
+			} else {
+				substSpan.innerHTML = "Keine Vertretungen für diese Woche";
+			}
+
 			substElement.appendChild(substSpan);
 			week_el.appendChild(substElement);
 		} else {
