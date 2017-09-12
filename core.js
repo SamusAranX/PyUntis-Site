@@ -30,7 +30,7 @@ window.onerror = error;
 function error(message, source, lineno, colno, error) {
 	console.log(message, source, lineno, colno, error);
 	document.body.className = "error";
-	if (typeof source != "undefined") {
+	if (typeof source !== "undefined") {
 		var sourceParts = source.split("/");
 		errorMessage.innerHTML = sourceParts[sourceParts.length - 1] + "(" + lineno + ", " + colno +  "): " + message;
 	} else {
@@ -61,7 +61,7 @@ function processHash(hash) {
 			document.body.className = "page0";
 			tableContainer.innerHTML = "";
 
-			if(typeof meta != "undefined") {
+			if(typeof meta !== "undefined") {
 				var classIndex = meta.classes.ids.indexOf(parseInt(hash));
 				header.innerHTML = meta.classes.names[classIndex];
 			} else {
@@ -75,7 +75,7 @@ function processHash(hash) {
 }
 
 window.addEventListener("DOMContentLoaded", function(e) {
-	header = document.getElementsByTagName("header")[0].childNodes[0];
+	header = document.getElementById("site-header");
 	errorMessage = document.getElementById("error").getElementsByClassName("message")[0];
 	
 	navPrevious = document.getElementById("nav-previous");
@@ -111,7 +111,7 @@ window.addEventListener("hashchange", function(e) {
 }, false);
 
 function loadInfo(completion) {
-	if(typeof meta != "undefined")
+	if(typeof meta !== "undefined")
 		return;
 	
 	var oReq = new XMLHttpRequest();
@@ -217,7 +217,7 @@ function fillPlan() {
 		for (var d = 0; d < weekLength; d++) {
 			var day = week[d];
 
-			if (typeof day == "undefined")
+			if (typeof day === "undefined")
 				continue;
 
 			var day_el = document.createElement("div");
@@ -275,7 +275,7 @@ function fillPlan() {
 
 					var lessons = day[timeunit.startTimeUntis];
 					var timeElement = document.createElement("div");
-					if(typeof lessons != "undefined") {
+					if(typeof lessons !== "undefined") {
 						firstLessonFound = true;
 						timeElement.classList.add("timeunit", "lesson");
 						
@@ -296,7 +296,7 @@ function fillPlan() {
 							lesson_el.appendChild(subjectSpan);
 							lesson_el.appendChild(roomSpan);
 
-							if (typeof lesson.code != "undefined" && lesson.code != "") {
+							if (typeof lesson.code !== "undefined" && lesson.code != "") {
 								//console.log(lesson.code);
 								lesson_el.classList.add(lesson.code);
 							}
@@ -337,18 +337,21 @@ function fillPlan() {
 		var weekStart = moment().startOf("week").subtract(1, "days").add(w, "weeks");
 		var weekEnd = moment().startOf("week").add(5, "days").add(w, "weeks");
 
-		var weekSubstitutions = planJSON.substitutions.filter(function(s) {
-			var lessonMoment = moment(s.date, "YYYYMMDD");
 
-// 			console.log(weekStart, weekEnd, s.date);
-			var isBetween = lessonMoment.isBetween(weekStart, weekEnd);
-			var isBefore = lessonMoment.isBefore(moment(todayDate), "day");
-			return isBetween && !isBefore;
-		}).sort(function(a, b) {
-			return parseInt(a.date) - parseInt(b.date) || parseInt(a.time) - parseInt(b.time);
-		});
+		var weekSubstitutions = null;
+		if ("substitutions" in planJSON) {
+			weekSubstitutions = planJSON.substitutions.filter(function(s) {
+				var lessonMoment = moment(s.date, "YYYYMMDD");
 
-		if (weekSubstitutions.length == 0) {
+				var isBetween = lessonMoment.isBetween(weekStart, weekEnd);
+				var isBefore = lessonMoment.isBefore(moment(todayDate), "day");
+				return isBetween && !isBefore;
+			}).sort(function(a, b) {
+				return parseInt(a.date) - parseInt(b.date) || parseInt(a.time) - parseInt(b.time);
+			});
+		}
+
+		if (weekSubstitutions === null || weekSubstitutions.length == 0) {
 			var substElement = document.createElement("div");
 			substElement.classList.add("substitution");
 			var substSpan = document.createElement("span");
@@ -422,8 +425,6 @@ function fillPlan() {
 			}
 		}
 		
-		
-
 		tcontainer.appendChild(week_el);
 	}
 }
