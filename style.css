@@ -367,7 +367,7 @@ footer {
 	header {
 		height: 40px;
 	}
-	header h1 {
+	header a h1 {
 		font-family: "Eve Sans Neue Expanded";
 		font-size: 1.5em;
 		line-height: 44px; /* 40px + 4px to compensate for glitches */
@@ -407,7 +407,7 @@ footer {
 		font-weight: bold;
 	}
 
-	#table-container .week .substitution {
+	#table-container .week .substitution:not(.header) {
 		font-size: .9em;
 	}
 }
