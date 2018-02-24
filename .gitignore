@@ -1,3 +1,4 @@
-plans/*
+plans/
 plan.log
-fonts/*
+fonts/
+.DS_Store

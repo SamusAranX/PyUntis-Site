@@ -1,8 +1,52 @@
-var header, errorMessage;
+var header, errorMessage, technicalMessage;
 var navPrevious, navNext;
 var classList, holidayList, tableContainer;
 
 var meta, planJSON;
+var config = {
+	schoolName: "Example",
+	plansDir: "plans/",
+	showSubstitutions: false,
+	debug: true
+};
+
+window.addEventListener("DOMContentLoaded", function(e) {
+	header = document.getElementById("site-header");
+	errorMessage = document.getElementById("error").getElementsByClassName("message")[0];
+	technicalMessage = document.getElementById("error").getElementsByClassName("technical-message")[0];
+	
+	navPrevious = document.getElementById("nav-previous");
+	navNext = document.getElementById("nav-next");
+	
+	classList = document.getElementById("class-list");
+	holidayList = document.getElementById("holiday-list");
+	tableContainer = document.getElementById("table-container");
+
+	console.log(config);
+	if (!config.showSubstitutions) {
+		console.log("no subst");
+		tableContainer.className = "noSubst";
+	}
+
+	document.body.classList.add("loading");
+}, false);
+
+window.addEventListener("load", function(e) {
+	moment.locale("de");
+	
+	navPrevious.addEventListener("click", navigateToPreviousWeek, false);
+	navNext.addEventListener("click", navigateToNextWeek, false);
+	
+	loadInfo(function() {
+		var hash = window.location.hash.substring(1).toLowerCase();
+		processHash(hash);
+	});
+}, false);
+
+window.addEventListener("hashchange", function(e) {
+	var hash = window.location.hash.substring(1).toLowerCase();
+	processHash(hash);
+}, false);
 
 function pad(num, size) {
 	var s = num+"";
@@ -32,11 +76,18 @@ function error(message, source, lineno, colno, error) {
 	document.body.className = "error";
 	if (typeof source !== "undefined") {
 		var sourceParts = source.split("/");
-		errorMessage.innerHTML = sourceParts[sourceParts.length - 1] + "(" + lineno + ", " + colno +  "): " + message;
+		technicalMessage.innerHTML = sourceParts[sourceParts.length - 1] + "(" + lineno + ", " + colno +  "): " + message;
 	} else {
-		errorMessage.innerHTML = message;
+		technicalMessage.innerHTML = message;
 	}
-	header.innerHTML = "";
+	header.innerHTML = config.schoolName;
+	/* This navigates the page into a dead end, requiring a reload. */
+}
+
+function manualError(message) {
+	document.body.className = "error";
+	errorMessage.innerHTML = message;
+	header.innerHTML = config.schoolName;
 	/* This navigates the page into a dead end, requiring a reload. */
 }
 
@@ -46,12 +97,14 @@ function processHash(hash) {
 	switch(hash) {
 		case "":
 			console.log("Displaying the menu");
+			fillInfo();
 			document.body.className = hash;
-			header.innerHTML = "";
+			header.innerHTML = config.schoolName;
 			break;
 		
 		case "holidays":
 			console.log("Displaying holidays");
+			fillInfo();
 			document.body.className = hash;
 			header.innerHTML = "(Ferien)";
 			break;
@@ -61,11 +114,23 @@ function processHash(hash) {
 			document.body.className = "page0";
 			tableContainer.innerHTML = "";
 
+			var hashInt = parseInt(hash);
+
 			if(typeof meta !== "undefined") {
-				var classIndex = meta.classes.ids.indexOf(parseInt(hash));
-				header.innerHTML = meta.classes.names[classIndex];
+				var classIndex = meta.classes.ids.indexOf(hashInt);
+				if (classIndex > -1) {
+					header.innerHTML = meta.classes.names[classIndex];
+				} else {
+					manualError("Das ist keine gültige Klassen-ID.");
+				}
 			} else {
 				console.log("meta isn't defined yet");
+			}
+
+			try {
+				localStorage.setItem("lastViewed", hashInt);
+			} catch(e) {
+				console.log("localStorage.setItem: " + e);
 			}
 
 			loadPlan(hash);
@@ -73,42 +138,6 @@ function processHash(hash) {
 			break;
 	}
 }
-
-window.addEventListener("DOMContentLoaded", function(e) {
-	header = document.getElementById("site-header");
-	errorMessage = document.getElementById("error").getElementsByClassName("message")[0];
-	
-	navPrevious = document.getElementById("nav-previous");
-	navNext = document.getElementById("nav-next");
-	
-	classList = document.getElementById("class-list");
-	holidayList = document.getElementById("holiday-list");
-	tableContainer = document.getElementById("table-container");
-
-	document.body.classList.add("loading");
-}, false);
-
-window.addEventListener("load", function(e) {
-	moment.locale("de");
-	
-	navPrevious.addEventListener("click", navigateToPreviousWeek, false);
-	navNext.addEventListener("click", navigateToNextWeek, false);
-	
-	loadInfo(function() {
-		fillInfo()
-
-		var hash = window.location.hash.substring(1).toLowerCase();
-		processHash(hash);
-		
-		// if(hash != "" && hash != "holidays")
-		//	loadPlan(hash);
-	});
-}, false);
-
-window.addEventListener("hashchange", function(e) {
-	var hash = window.location.hash.substring(1).toLowerCase();
-	processHash(hash);
-}, false);
 
 function loadInfo(completion) {
 	if(typeof meta !== "undefined")
@@ -134,19 +163,37 @@ function loadInfo(completion) {
 		}
 	}, false);
 	oReq.onerror = error;
-	oReq.open("get", "plans/meta.json");
+	oReq.open("get", config.plansDir + "meta.json");
 	oReq.send();
 }
 
 function fillInfo() {
+	console.log("fillInfo");
+
+	var lastViewed = localStorage.getItem("lastViewed");
+	if (lastViewed === null)
+		lastViewed = -1;
+
+	classList.innerHTML = "";
 	for (var i = 0; i < meta.classes.ids.length; i++) {
 		var classLink = document.createElement("a");
 		classLink.href = "#" + meta.classes.ids[i];
 		classLink.innerHTML = meta.classes.names[i];
+
+		if (meta.classes.ids[i] == lastViewed)
+			classLink.className = "last-viewed";
 		
 		classList.appendChild(classLink);
 	}
+
+	if (config.debug) {
+		var classLink = document.createElement("a");
+		classLink.href = "#" + 9001;
+		classLink.innerHTML = "error";	
+		classList.appendChild(classLink);
+	}
 	
+	holidayList.innerHTML = "";
 	for (var i = 0; i < meta.holidays.length; i++) {
 	    var holiday = meta.holidays[i];
 	    
@@ -154,11 +201,10 @@ function fillInfo() {
 	    var holidayEnd = moment(holiday.endDateISO8601);
 	    
 	    if(holidayEnd.isBefore())
-	    		continue;
+	    	continue;
 	    
 		var holidayDiv = document.createElement("div");
 		var holidayDivText = holiday.startDate;
-// 		alert(moment(holiday.startDate));
 		if (holiday.startDateUntis != holiday.endDateUntis) {
 		    holidayDivText += " - " + holiday.endDate;
 		}
@@ -177,9 +223,6 @@ function loadPlan(classID) {
 			if(srcElement.status == 200) {
 				planJSON = JSON.parse(srcElement.responseText);
 				console.log("Plans loaded");
-				// console.log(planJSON);
-				
-				// debugFill();
 				document.body.classList.remove("loading");
 				fillPlan();
 			} else {
@@ -189,7 +232,7 @@ function loadPlan(classID) {
 		}
 	}, false);
 	oReq.onerror = error;
-	oReq.open("get", "plans/" + classID + ".json");
+	oReq.open("get", config.plansDir + classID + ".json");
 	oReq.send();
 	
 	document.body.classList.add("loading");
@@ -202,7 +245,6 @@ function fillPlan() {
 	console.log("fillPlan", planJSON);
 
 	var tcontainer = document.getElementById("table-container");
-	// var tableFrag = document.createDocumentFragment();
 	var todayDate = new Date();
 	for (var w = 0; w < planJSON.weeks.length; w++) {
 		var week = planJSON.weeks[w];
@@ -297,7 +339,6 @@ function fillPlan() {
 							lesson_el.appendChild(roomSpan);
 
 							if (typeof lesson.code !== "undefined" && lesson.code != "") {
-								//console.log(lesson.code);
 								lesson_el.classList.add(lesson.code);
 							}
 							

@@ -41,7 +41,8 @@
 body {
 	background: #183152;
 	color: #e1e6fa;
-	font-family: "Eve Sans Neue Expanded", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	/*font-family: "Eve Sans Neue Expanded", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
 	font-size: 12pt;
 	font-weight: bold;
 	margin: 0;
@@ -55,12 +56,7 @@ body {
 /* Class names that core.js uses to show/hide UI parts */
 body[class=""] #class-list { display: flex; }
 
-/*body[class=""] header h1:before,
-body[class="error"] header h1:before { 
-	content: "Vertretungsplan"; 
-}*/
-
-body[class="error"] #error { display: flex; }
+body[class$="error"] #error { display: flex; }
 
 header h1:before {
 	content: "Vertretungsplan ";
@@ -111,13 +107,26 @@ nav a {
 	font-weight: bold;
 	text-decoration: none;
 
+	/*-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;*/
+
+	transition: .12s ease-in-out;
+    transition-property: background, color;
+}
+nav a:hover {
+	background: #e1e6fa;
+	color: #375d81;
+
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
 }
+
 nav a[data-disabled=true],
-body[class="error"] nav a,
+body[class$="error"] nav a,
 body:not([class^="page"]) #nav-previous,
 body:not([class^="page"]) #nav-next,
 body[class="page0"] #nav-previous,
@@ -137,16 +146,14 @@ body[class="page2"] #nav-next {
 }
 #error span, #loading span, #noscript span {
 	font-size: 1.5em;
-	line-height: 30px;
+	/*line-height: 30px;*/
 	text-align: center;
 	text-shadow: 0 1px 1px rgba(0,0,0,.5);
 }
-#error .message {
-	font-size: 0.8em;
-	font-weight: normal;
-}
-/*#error .message::before { content: "("; }
-#error .message::after { content: ")"; }*/
+#error .message { font-size: 0.9em; }
+#error .technical-message { font-size: 0.75em; }
+/*#error .technical-message::before { content: "("; }
+#error .technical-message::after { content: ")"; }*/
 
 #noscript {
 	display: flex;
@@ -161,7 +168,6 @@ body[class="page2"] #nav-next {
 	display: none; /* Overridden by body class above */
 	flex-wrap: wrap;
 	padding: 1px;
-	text-shadow: 0 0 2px rgba(0,0,0,.5), 0 2px 1px rgba(0,0,0,.5);
 }
 #class-list a, #holiday-list div {
 	background: #375d81;
@@ -174,12 +180,13 @@ body[class="page2"] #nav-next {
 	min-width: 64px;
 	text-align: center;
 	text-decoration: none;
+	text-shadow: 0 0 2px rgba(0,0,0,.5), 0 2px 1px rgba(0,0,0,.5);
 }
 #class-list a {
 	transition: .12s ease-in-out;
     transition-property: background, box-shadow, color, text-shadow;
 }
-#class-list a:hover {
+#class-list a:hover, #class-list a.last-viewed {
 	background: #e1e6fa;
 	color: #375d81;
 	text-shadow: 0 0 2px rgba(255,255,255,.5), 0 2px 1px rgba(255,255,255,.5);
@@ -231,6 +238,7 @@ body[class="page2"] #nav-next {
 #table-container .week .days .day .header {
 	background: #183152;
 	border: solid 1px rgba(0,0,0,.3);
+	font-size: 0.9em;
 	height: 42px;
 	line-height: 20px;
 }
@@ -330,6 +338,10 @@ body[class="page2"] #nav-next {
 	margin: 1px;
 	text-align: center;
 }
+#table-container.noSubst .week .substitution {
+	display: none;
+}
+
 #table-container .week .substitution.past {
 	opacity: .75;
 }
@@ -360,7 +372,7 @@ footer {
 	span.short { display: inline-block; }
 	
 	body {
-		font-family: "Eve Sans Neue";
+		/*font-family: "Eve Sans Neue";*/
 		font-weight: normal;
 	}
 	
@@ -368,13 +380,13 @@ footer {
 		height: 40px;
 	}
 	header a h1 {
-		font-family: "Eve Sans Neue Expanded";
+		/*font-family: "Eve Sans Neue Expanded";*/
 		font-size: 1.5em;
 		line-height: 44px; /* 40px + 4px to compensate for glitches */
 	}
 	
 	nav a {
-		font-family: "Eve Sans Neue Condensed";
+		/*font-family: "Eve Sans Neue Condensed";*/
 		font-weight: normal;
 	}
 	
@@ -385,7 +397,7 @@ footer {
 	#table-container .week .days .day .header,
 	#table-container .week .days .day .timeunit.time,
 	#table-container .week .substitution.header {
-	    font-family: "Eve Sans Neue Expanded";
+	    /*font-family: "Eve Sans Neue Expanded";*/
 		font-weight: bold;
 	}
 	
@@ -396,6 +408,10 @@ footer {
 		/*line-height: 18px;*/
 		margin: 1px 0;
 	}
+
+	/*#table-container .week .days .day .timeunit.lesson .lesson {
+		padding: 4px 0;
+	}*/
 	
 	#table-container .week .days .day .timeunit.time {
 		height: 22px;
