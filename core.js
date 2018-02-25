@@ -487,4 +487,9 @@ function fillPlan() {
 		
 		tcontainer.appendChild(week_el);
 	}
+
+	if (todayDate.getDay() == 6 || todayDate.getDay() == 0) {
+		console.log("It's the weekend. Displaying the next week.");
+		navigateToNextWeek();
+	}
 }
