@@ -107,7 +107,7 @@ function processHash(hash) {
 			console.log("Displaying holidays");
 			fillInfo();
 			document.body.className = hash;
-			header.innerHTML = "(Ferien)";
+			header.innerHTML = "Ferien";
 			break;
 			
 		default:

@@ -84,6 +84,9 @@ header a h1:before {
 body[class="holidays"] #holiday-list {
 	display: flex;
 }
+body[class="holidays"] header a h1:before {
+	content: "";
+}
 
 body[class^="page"] #table-container {
 	display: block;
