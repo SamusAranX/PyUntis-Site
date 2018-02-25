@@ -12,8 +12,8 @@ var config = {
 
 window.addEventListener("DOMContentLoaded", function(e) {
 	header = document.getElementById("site-header");
-	errorMessage = document.getElementById("error").getElementsByClassName("message")[0];
-	technicalMessage = document.getElementById("error").getElementsByClassName("technical-message")[0];
+	errorMessage = document.getElementsByClassName("message")[0];
+	technicalMessage = document.getElementsByClassName("technical-message")[0];
 	
 	navPrevious = document.getElementById("nav-previous");
 	navNext = document.getElementById("nav-next");
@@ -80,14 +80,15 @@ function error(message, source, lineno, colno, error) {
 	} else {
 		technicalMessage.innerHTML = message;
 	}
-	header.innerHTML = config.schoolName;
+	technicalMessage.classList.append("active");
+	header.innerHTML = "";
 	/* This navigates the page into a dead end, requiring a reload. */
 }
 
 function manualError(message) {
 	document.body.className = "error";
 	errorMessage.innerHTML = message;
-	header.innerHTML = config.schoolName;
+	header.innerHTML = "";
 	/* This navigates the page into a dead end, requiring a reload. */
 }
 
@@ -135,6 +136,8 @@ function processHash(hash) {
 
 			loadPlan(hash);
 
+			window.scrollTo(0, 0);
+
 			break;
 	}
 }
@@ -153,12 +156,13 @@ function loadInfo(completion) {
 				console.log(meta);
 				
 				var m = moment(meta.lastUpdatedISO8601);
+				console.log(m);
 				document.getElementsByTagName("footer")[0].innerHTML = "Zuletzt aktualisiert: " + m.fromNow();
 				
 				completion();
 			} else {
 				var responseURLParts = srcElement.responseURL.split("/");
-				error("Couldn't load " + responseURLParts[responseURLParts.length - 1]);
+				manualError(`Konnte ${responseURLParts[responseURLParts.length - 1]} nicht laden`);
 			}
 		}
 	}, false);
@@ -227,7 +231,7 @@ function loadPlan(classID) {
 				fillPlan();
 			} else {
 				var responseURLParts = srcElement.responseURL.split("/");
-				error("Couldn't load " + responseURLParts[responseURLParts.length - 1]);
+				manualError(`Konnte ${responseURLParts[responseURLParts.length - 1]} nicht laden`);
 			}
 		}
 	}, false);
@@ -269,20 +273,31 @@ function fillPlan() {
 			if(w == 0 && d == todayDate.getDay() - 1)
 				day_el.classList.add("today");
 
-			day_header_long = document.createElement("span");
-			day_header_short = document.createElement("span");
-			
-			day_header_long.classList.add("long");
-			day_header_short.classList.add("short");
-			
-			day_header_long.innerHTML = meta.weekDatesLong[w][d];
-			day_header_short.innerHTML = meta.weekDatesShort[w][d];
+			var dayLongParts = meta.weekDatesLong[w][d].split("<br>");
+			var dayShortParts = meta.weekDatesShort[w][d].split("<br>");
+
+			var shortDaySpan = document.createElement("span");
+			var shortDateSpan = document.createElement("span");
+			shortDaySpan.className = "short";
+			shortDateSpan.className = "short";
+			shortDaySpan.innerHTML = dayShortParts[0];
+			shortDateSpan.innerHTML = dayShortParts[1];
+
+			var longDaySpan = document.createElement("span");
+			var longDateSpan = document.createElement("span");
+			longDaySpan.className = "long";
+			longDateSpan.className = "long";
+			longDaySpan.innerHTML = dayLongParts[0];
+			longDateSpan.innerHTML = dayLongParts[1];
 
 			var day_header = document.createElement("div");
 			day_header.classList.add("header");
 			
-			day_header.appendChild(day_header_long);
-			day_header.appendChild(day_header_short);
+			day_header.appendChild(shortDaySpan);
+			day_header.appendChild(shortDateSpan);
+
+			day_header.appendChild(longDaySpan);
+			day_header.appendChild(longDateSpan);
 	
 			day_el.appendChild(day_header);
 
@@ -377,7 +392,6 @@ function fillPlan() {
 
 		var weekStart = moment().startOf("week").subtract(1, "days").add(w, "weeks");
 		var weekEnd = moment().startOf("week").add(5, "days").add(w, "weeks");
-
 
 		var weekSubstitutions = null;
 		if ("substitutions" in planJSON) {

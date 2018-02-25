@@ -1,49 +1,62 @@
 @font-face {
-    font-family: "Eve Sans Neue";
-    src: url("fonts/evesansneue-regular-webfont.woff2") format("woff2"),
-        url("fonts/evesansneue-regular-webfont.woff") format("woff");
-    font-weight: normal;
+	font-family: "Eve Sans Neue";
+	src: url("fonts/evesansneue-regular-webfont.woff2") format("woff2"),
+		url("fonts/evesansneue-regular-webfont.woff") format("woff");
+	font-stretch: normal;
+	font-weight: normal;
 }
 @font-face {
-    font-family: "Eve Sans Neue";
-    src: url("fonts/evesansneue-bold-webfont.woff2") format("woff2"),
-        url("fonts/evesansneue-bold-webfont.woff") format("woff");
-    font-weight: bold;
+	font-family: "Eve Sans Neue";
+	src: url("fonts/evesansneue-bold-webfont.woff2") format("woff2"),
+		url("fonts/evesansneue-bold-webfont.woff") format("woff");
+	font-stretch: normal;
+	font-weight: bold;
 }
 @font-face {
-    font-family: "Eve Sans Neue Condensed";
-    src: url("fonts/evesansneue-condensed-webfont.woff2") format("woff2"),
-        url("fonts/evesansneue-condensed-webfont.woff") format("woff");
-    font-weight: normal;
+	font-family: "Eve Sans Neue";
+	src: url("fonts/evesansneue-condensed-webfont.woff2") format("woff2"),
+		url("fonts/evesansneue-condensed-webfont.woff") format("woff");
+	font-stretch: condensed;
+	font-weight: normal;
 }
 @font-face {
-    font-family: "Eve Sans Neue Condensed";
-    src: url("fonts/evesansneue-condensedbold-webfont.woff2") format("woff2"),
-        url("fonts/evesansneue-condensedbold-webfont.woff") format("woff");
-    font-weight: bold;
+	font-family: "Eve Sans Neue";
+	src: url("fonts/evesansneue-condensedbold-webfont.woff2") format("woff2"),
+		url("fonts/evesansneue-condensedbold-webfont.woff") format("woff");
+	font-stretch: condensed;
+	font-weight: bold;
 }
 @font-face {
-    font-family: "Eve Sans Neue Expanded";
-    src: url("fonts/evesansneue-expanded-webfont.woff2") format("woff2"),
-        url("fonts/evesansneue-expanded-webfont.woff") format("woff");
-    font-weight: normal;
+	font-family: "Eve Sans Neue";
+	src: url("fonts/evesansneue-expanded-webfont.woff2") format("woff2"),
+		url("fonts/evesansneue-expanded-webfont.woff") format("woff");
+	font-stretch: expanded;
+	font-weight: normal;
 }
 @font-face {
-    font-family: "Eve Sans Neue Expanded";
-    src: url("fonts/evesansneue-expandedbold-webfont.woff2") format("woff2"),
-        url("fonts/evesansneue-expandedbold-webfont.woff") format("woff");
-    font-weight: bold;
+	font-family: "Eve Sans Neue";
+	src: url("fonts/evesansneue-expandedbold-webfont.woff2") format("woff2"),
+		url("fonts/evesansneue-expandedbold-webfont.woff") format("woff");
+	font-stretch: expanded;
+	font-weight: bold;
 }
 
 /* https://color.adobe.com/Bloggy-Gradient-Blues-color-theme-66891/?showPublished=true */
 
 * { box-sizing: border-box; }
 body {
-	background: #183152;
-	color: #e1e6fa;
-	font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
-	/*font-family: "Eve Sans Neue Expanded", "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+	/* css vars, heck yeah */
+	--bg-color: #183152;
+	--contrast-bg-color: #e1e6fa;
+	--lighter-bg-color: #375d81;
+	--error-color: #e74c3c;
+	--highlight-color: #F1C40F;
+
+	background: var(--bg-color);
+	color: var(--contrast-bg-color);
+	font-family: "Eve Sans Neue", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 12pt;
+	font-stretch: normal;
 	font-weight: bold;
 	margin: 0;
 	padding: 0;
@@ -57,9 +70,15 @@ body {
 body[class=""] #class-list { display: flex; }
 
 body[class$="error"] #error { display: flex; }
+body[class$="error"] header a h1:before {
+	content: "Vertretungsplan";
+}
 
-header h1:before {
-	content: "Vertretungsplan ";
+header a h1 {
+	font-stretch: expanded;
+}
+header a h1:before {
+	content: "Vertretungsplan für ";
 }
 
 body[class="holidays"] #holiday-list {
@@ -82,11 +101,11 @@ body[class="page2"] #table-container .week:nth-child(3) { display: flex; }
 
 /* "Vertretungsplan X" header */
 header a {
-	color: #e1e6fa;
+	color: var(--contrast-bg-color);
 }
 header a h1 {
-	height: 64px;
-	line-height: 68px;
+	height: 56px;
+	line-height: 56px;
 	margin: 0;
 	text-align: center;
 	text-shadow: 0 1px 1px rgba(0,0,0,.5);
@@ -101,23 +120,23 @@ nav {
 	text-align: center;
 }
 nav a {
-	color: #e1e6fa;
+	color: var(--contrast-bg-color);
 	cursor: pointer;
 	flex: 1 1 auto;
 	font-weight: bold;
 	text-decoration: none;
 
-	/*-webkit-user-select: none;
+	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
-	user-select: none;*/
+	user-select: none;
 
 	transition: .12s ease-in-out;
-    transition-property: background, color;
+	transition-property: background, color;
 }
 nav a:hover {
-	background: #e1e6fa;
-	color: #375d81;
+	background: var(--contrast-bg-color);
+	color: var(--lighter-bg-color);
 
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -137,7 +156,6 @@ body[class="page2"] #nav-next {
 
 #error, #loading, #noscript {
 	align-items: center;
-	/*background: #e74c3c;*/
 	color: white;
 	display: none;
 	flex-direction: column;
@@ -146,33 +164,37 @@ body[class="page2"] #nav-next {
 }
 #error span, #loading span, #noscript span {
 	font-size: 1.5em;
-	/*line-height: 30px;*/
 	text-align: center;
 	text-shadow: 0 1px 1px rgba(0,0,0,.5);
 }
+
+#error span:not(:first-child) {
+	/*margin-top: 4px;*/
+}
+
 #error .message { font-size: 0.9em; }
 #error .technical-message { font-size: 0.75em; }
-/*#error .technical-message::before { content: "("; }
-#error .technical-message::after { content: ")"; }*/
+#error .technical-message.active::before { content: "("; }
+#error .technical-message.active::after { content: ")"; }
 
 #noscript {
 	display: flex;
 }
 
-#error, #noscript { background: #e74c3c; }
-#loading { background: #183152; }
+#error, #noscript { background: var(--error-color); }
+#loading { background: var(--bg-color); }
 
 /* List of classes. Makes heavy use of display: flex; */
 #class-list {
-	background: #e1e6fa;
+	background: var(--contrast-bg-color);
 	display: none; /* Overridden by body class above */
 	flex-wrap: wrap;
 	padding: 1px;
 }
 #class-list a, #holiday-list div {
-	background: #375d81;
-	border: solid 1px #183152;
-	color: #e1e6fa;
+	background: var(--lighter-bg-color);
+	border: solid 1px var(--bg-color);
+	color: var(--contrast-bg-color);
 	flex: 1 0 auto;
 	min-height: 30px;
 	line-height: 30px;
@@ -184,25 +206,26 @@ body[class="page2"] #nav-next {
 }
 #class-list a {
 	transition: .12s ease-in-out;
-    transition-property: background, box-shadow, color, text-shadow;
+	transition-property: background, box-shadow, color, text-shadow;
 }
 #class-list a:hover, #class-list a.last-viewed {
-	background: #e1e6fa;
-	color: #375d81;
+	background: var(--contrast-bg-color);
+	color: var(--lighter-bg-color);
 	text-shadow: 0 0 2px rgba(255,255,255,.5), 0 2px 1px rgba(255,255,255,.5);
 }
 
 #holiday-list {
-	background: #e1e6fa;
+	background: var(--contrast-bg-color);
 	display: none;
 	flex-direction: column;
+	font-stretch: normal;
 	padding: 1px;
 	text-shadow: 0 0 2px rgba(0,0,0,.5), 0 2px 1px rgba(0,0,0,.5);
 }
 
 /* Container for timetable elements */
 #table-container {    
-	background: #e1e6fa;
+	background: var(--contrast-bg-color);
 	display: none;
 	text-shadow: 0 0 2px rgba(0,0,0,.8), 0 2px 1px rgba(0,0,0,.5);
 }
@@ -222,10 +245,11 @@ body[class="page2"] #nav-next {
 }
 
 #table-container .week .days .day {
-	/*background: #88C1F2;*/
 	display: flex;
 	flex: 1 0 auto;
 	flex-direction: column;
+
+	font-stretch: expanded;
 	
 	margin: 1px 1px 0 1px;
 	min-width: 100px;
@@ -236,19 +260,23 @@ body[class="page2"] #nav-next {
 }
 
 #table-container .week .days .day .header {
-	background: #183152;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	background: var(--bg-color);
 	border: solid 1px rgba(0,0,0,.3);
 	font-size: 0.9em;
 	height: 42px;
-	line-height: 20px;
+	/*line-height: 20px;*/
 }
 #table-container .week .days .day.today .header {
-	color: #F1C40F; /* yellow */
+	color: var(--highlight-color);
 }
 
 #table-container .week .days .day .timeunit {
-	/*background: #375d81;
-	border: solid 1px #183152;*/
+	/*background: var(--lighter-bg-color);
+	border: solid 1px var(--bg-color);*/
 	height: 42px;
 	/*line-height: 20px;*/
 	margin: 1px 0;
@@ -258,8 +286,8 @@ body[class="page2"] #nav-next {
 	display: flex;
 }
 #table-container .week .days .day .timeunit.lesson .lesson {
-	background: #375d81;
-	border: solid 1px #183152;
+	background: var(--lighter-bg-color);
+	border: solid 1px var(--bg-color);
 	
 	display: flex;
 	flex-direction: column;
@@ -273,7 +301,7 @@ body[class="page2"] #nav-next {
 }
 
 #table-container .week .days .day .timeunit.lesson .lesson.cancelled {
-	background: #e74c3c;
+	background: var(--error-color);
 	border-color: #c0392b;
 }
 #table-container .week .days .day .timeunit.lesson .lesson.irregular {
@@ -282,7 +310,6 @@ body[class="page2"] #nav-next {
 }
 
 #table-container .week .days .day .timeunit.lesson .lesson span {
-	flex: 0 1 auto;
 	font-size: .9em;
 }
 
@@ -312,14 +339,15 @@ body[class="page2"] #nav-next {
 
 /* Timeunit/substitution headers and footers with start and end time */
 #table-container .week .days .day .timeunit.time {
-	border: solid 1px #183152;
+	border: solid 1px var(--bg-color);
+	font-stretch: expanded;
 	height: 24px;
 	line-height: 22px;
 }
 #table-container .week .days .day .timeunit.time,
 #table-container .week .days .day .timeunit.holiday,
 #table-container .week .substitution.header.weekday {
-	background: #375d81 linear-gradient(-45deg, 
+	background: var(--lighter-bg-color) linear-gradient(-45deg, 
 		rgba(24,49,82,0.6) 25%, 
 		transparent 25%, 
 		transparent 50%, 
@@ -331,8 +359,8 @@ body[class="page2"] #nav-next {
 }
 
 #table-container .week .substitution {
-	background: #375d81;
-	border: solid 1px #183152;
+	background: var(--lighter-bg-color);
+	border: solid 1px var(--bg-color);
 	height: 24px;
 	line-height: 23px;
 	margin: 1px;
@@ -346,7 +374,7 @@ body[class="page2"] #nav-next {
 	opacity: .75;
 }
 #table-container .week .substitution.header {
-	background: #183152;
+	background: var(--bg-color);
 }
 #table-container .week .substitution.header.weekday {
 	position: relative;
@@ -358,52 +386,60 @@ body[class="page2"] #nav-next {
 footer {
 	background: rgba(0,0,0,.25);
 	height: 26px;
-	line-height: 28px;
+	line-height: 26px;
 	text-align: center;
 }
 
 /* Media Query overrides after this point */
 @media only screen and (min-width: 601px) { /* Desktop browsers */
-	span.long { display: inline-block; }
+	span.long { display: unset; }
 	span.short { display: none; }
 }
 @media only screen and (max-width: 600px) { /* Mobile browsers/narrow windows */
 	span.long { display: none; }
-	span.short { display: inline-block; }
+	span.short { display: unset; }
 	
 	body {
-		/*font-family: "Eve Sans Neue";*/
-		font-weight: normal;
+		/*font-weight: normal;*/
 	}
 	
 	header {
 		height: 40px;
 	}
+	header a h1:before {
+		content: "Plan für ";
+	}
 	header a h1 {
-		/*font-family: "Eve Sans Neue Expanded";*/
 		font-size: 1.5em;
+		font-stretch: expanded;
 		line-height: 44px; /* 40px + 4px to compensate for glitches */
 	}
 	
 	nav a {
-		/*font-family: "Eve Sans Neue Condensed";*/
+		font-stretch: condensed;
 		font-weight: normal;
 	}
 	
 	#error span {
 		font-size: 1.3em;
 	}
+
+	#holiday-list {
+		font-stretch: condensed;
+		font-weight: normal;
+	}
 	
 	#table-container .week .days .day .header,
 	#table-container .week .days .day .timeunit.time,
 	#table-container .week .substitution.header {
-	    /*font-family: "Eve Sans Neue Expanded";*/
+		font-size: 0.9em;
+		font-stretch: expanded;
 		font-weight: bold;
 	}
 	
 	#table-container .week .days .day .timeunit {
-		/*background: #375d81;
-		border: solid 1px #183152;*/
+		/*background: var(--lighter-bg-color);
+		border: solid 1px var(--bg-color);*/
 		height: 36px;
 		/*line-height: 18px;*/
 		margin: 1px 0;
@@ -415,7 +451,8 @@ footer {
 	
 	#table-container .week .days .day .timeunit.time {
 		height: 22px;
-		line-height: 22px;
+		line-height: 21.5px;
+		/*font-stretch: condensed;*/
 	}
 
 	#table-container .week .days .day .timeunit.lesson .lesson span {	
@@ -425,5 +462,10 @@ footer {
 
 	#table-container .week .substitution:not(.header) {
 		font-size: .9em;
+	}
+
+	footer {
+		font-weight: normal;
+		font-stretch: condensed;
 	}
 }
