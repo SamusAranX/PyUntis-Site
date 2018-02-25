@@ -236,7 +236,7 @@ body[class="page2"] #nav-next {
 #table-container .week {
 	display: none; /* Overridden by body class above */
 	flex-direction: column;
-	padding: 1px;
+	padding: 1px 2px 0 2px;
 }
 #table-container .week[data-visible=false] {
 	display: none;
@@ -254,12 +254,15 @@ body[class="page2"] #nav-next {
 
 	font-stretch: expanded;
 	
-	margin: 1px 1px 0 1px;
+	margin: 1px 0;
 	min-width: 100px;
 	
 	position: relative;
 	
 	text-align: center;
+}
+#table-container .week .days .day:not(:last-child) {
+	margin-right: 2px;
 }
 
 #table-container .week .days .day .header {
@@ -278,10 +281,7 @@ body[class="page2"] #nav-next {
 }
 
 #table-container .week .days .day .timeunit {
-	/*background: var(--lighter-bg-color);
-	border: solid 1px var(--bg-color);*/
 	height: 42px;
-	/*line-height: 20px;*/
 	margin: 1px 0;
 }
 
@@ -297,7 +297,7 @@ body[class="page2"] #nav-next {
 	justify-content: center;
 	
 	flex: 1 1 auto;
-	min-width: 36px;
+	padding: 0 10px;
 }
 #table-container .week .days .day .timeunit.lesson .lesson:not(:first-child) {
 	margin-left: 2px;
@@ -366,7 +366,7 @@ body[class="page2"] #nav-next {
 	border: solid 1px var(--bg-color);
 	height: 24px;
 	line-height: 23px;
-	margin: 1px;
+	margin: 1px 1px 1px 0;
 	text-align: center;
 }
 #table-container.noSubst .week .substitution {
