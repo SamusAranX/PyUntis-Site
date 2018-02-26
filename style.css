@@ -52,6 +52,11 @@ body {
 	--error-color: #e74c3c;
 	--highlight-color: #F1C40F;
 
+	--cancelled-bg-color: #e74c3c;
+	--cancelled-border-color: #c0392b;
+	--irregular-bg-color: #2ecc71;
+	--irregular-border-color: #27ae60;
+
 	background: var(--bg-color);
 	color: var(--contrast-bg-color);
 	font-family: "Eve Sans Neue", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -70,7 +75,7 @@ body {
 body[class=""] #class-list { display: flex; }
 
 body[class$="error"] #error { display: flex; }
-body[class$="error"] header a h1:before {
+body[class$="error"] header a h1:before, body[class$="noscript"] header a h1:before{
 	content: "Vertretungsplan";
 }
 
@@ -304,12 +309,12 @@ body[class="page2"] #nav-next {
 }
 
 #table-container .week .days .day .timeunit.lesson .lesson.cancelled {
-	background: var(--error-color);
-	border-color: #c0392b;
+	background: var(--cancelled-bg-color);
+	border-color: var(--cancelled-border-color);
 }
 #table-container .week .days .day .timeunit.lesson .lesson.irregular {
-	background: #2ecc71;
-	border-color: #27ae60;
+	background: var(--irregular-bg-color);
+	border-color: var(--irregular-border-color);
 }
 
 #table-container .week .days .day .timeunit.lesson .lesson span {

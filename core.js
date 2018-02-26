@@ -28,7 +28,7 @@ window.addEventListener("DOMContentLoaded", function(e) {
 		tableContainer.className = "noSubst";
 	}
 
-	document.body.classList.add("loading");
+	document.body.className = "loading";
 }, false);
 
 window.addEventListener("load", function(e) {
