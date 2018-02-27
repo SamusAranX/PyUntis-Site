@@ -16,6 +16,8 @@ PyUntis-Site (amazing name, I know) is an interface for [`PyUntis`](https://gith
 	* You can link directly to a class's timetable link and it will Just Work™
 	* Not that anyone does that still, but you can drop a bookmark on your iOS homescreen and the site will behave like a webapp
 
+[Try it here!](https://plan.peterwunder.de/example/)
+
 ## Requirements
 
 * A web server 
@@ -58,8 +60,9 @@ git stash pop
 * Teacher names/abbreviations are currently not displayed
 * The site looks weird in older browsers
 	* It looks fine in Firefox, Safari, and Chrome. Just use those.
-* The fonts in the screenshots look different
-	* On my sites (and in the Screenshots), I use Eve Sans Neue, a font from the game EVE Online. I'm pretty sure it's not allowed to redistribute these, so they're not included in this repo. The site will fall back to the viewers' system fonts, where supported.
+* The site doesn't have the same fonts than in the screenshots
+	* On my sites (and in the screenshots), I use Eve Sans Neue, a font from the game EVE Online. I'm pretty sure it's not allowed to redistribute these, so they're not included in this repo. The site will fall back to the viewers' system fonts, where supported.
+	* Check the @font-face declarations at the top of `style.css` to see how I load fonts and to replace them
 
 ## Feedback and Support
 Just tweet at me [@SamusAranX](https://twitter.com/SamusAranX) or [drop me a mail](mailto:hallo@peterwunder.de).
