@@ -1,6 +1,11 @@
 # PyUntis-Site
 PyUntis-Site (amazing name, I know) is an interface for [`PyUntis`](https://github.com/SamusAranX/PyUntis), which creates its data.
 
+## Screenshots
+![PyUntis-Site in Safari on macOS](https://user-images.githubusercontent.com/676069/36731888-66bb8f04-1bcc-11e8-87ad-98fefd01645b.png)
+
+![PyUntis-Site on iOS](https://user-images.githubusercontent.com/676069/36731889-66d57040-1bcc-11e8-876b-ed016274d085.png)
+
 ## Features
 * __Extremely small:__ If you have GZIP compression enabled on your server, a full page load is just about 30 kilobytes, most of which gets cached by the browser after the first load.
 * __Extremely fast:__ All site transitions are done with JS and CSS so the site never has to reload.
@@ -53,6 +58,8 @@ git stash pop
 * Teacher names/abbreviations are currently not displayed
 * The site looks weird in older browsers
 	* It looks fine in Firefox, Safari, and Chrome. Just use those.
+* The fonts in the screenshots look different
+	* On my sites (and in the Screenshots), I use Eve Sans Neue, a font from the game EVE Online. I'm pretty sure it's not allowed to redistribute these, so they're not included in this repo. The site will fall back to the viewers' system fonts, where supported.
 
 ## Feedback and Support
 Just tweet at me [@SamusAranX](https://twitter.com/SamusAranX) or [drop me a mail](mailto:hallo@peterwunder.de).
