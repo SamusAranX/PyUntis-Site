@@ -45,6 +45,7 @@
 body {
 	/* css vars, heck yeah */
 	--bg-color: #183152;
+	--bg-color-darker: #192841;
 	--nav-bg-color: rgba(18, 30, 50, 0.45);
 
 	--bright-bg-color: #edf0fc;
@@ -100,7 +101,7 @@ body[class="page1"] #table-container .week:nth-child(2) { display: flex; }
 body[class="page2"] #table-container .week:nth-child(3) { display: flex; }
 
 header, nav {
-	position: absolute;
+	/*position: absolute;*/
 	position: -webkit-sticky;
 	position: sticky;
 	z-index: 42;
@@ -109,6 +110,16 @@ header a, nav a {
 	color: var(--bright-bg-color);
 	text-align: center;
 	text-shadow: 0 1px 1px rgba(0,0,0,.5);
+}
+
+html:not(.m_csspositionsticky) header, html:not(.m_csspositionsticky) nav {
+	/*left: 0;*/
+	/*right: 0;*/
+
+	position: relative;
+}
+html:not(.m_csspositionsticky) nav {
+	top: 0px;
 }
 
 header {
@@ -123,12 +134,17 @@ header::after {
 	right: 0;
 	height: 82px; /* header height + nav height */
 
-	background: linear-gradient(to bottom, transparent -10%, var(--nav-bg-color) 100%);
+	background: linear-gradient(to bottom, var(--bg-color) 0%, var(--bg-color-darker) 100%);
 	box-shadow: 0 0 4px rgba(0,0,0,.8);
 
-	-webkit-backdrop-filter: blur(20px);
-
 	z-index: -1;
+}
+/*html:not(.m_csspositionsticky) body {
+	padding-top: 82px;
+}*/
+html.m_backdropfilter header::after {
+	background: linear-gradient(to bottom, transparent -10%, var(--nav-bg-color) 100%);
+	-webkit-backdrop-filter: blur(20px);
 }
 
 header a h1:before {
@@ -352,6 +368,7 @@ body[class="page2"] #nav-next {
 	flex: 1 0 auto;
 	flex-direction: column;
 	justify-content: center;
+	min-height: 250px;
 }
 #table-container .week .days .day .timeunit.holiday span {
 	flex: 0 1 auto;
@@ -415,11 +432,16 @@ footer {
 	text-align: center;
 }
 
+/* Ten Foot UI */
+
+body.tenfoot {
+	font-size: 20pt;
+}
+
 /* Media Query overrides after this point */
 
 /* Desktop browsers */
-@media screen and (min-width: 541px) { 
-	span.long { display: unset; }
+@media screen and (min-width: 541px) {
 	span.short { display: none; }
 }
 
@@ -431,6 +453,9 @@ footer {
 	header::after {
 		height: 66px; /* header height + nav height */
 	}
+	/*html:not(.m_csspositionsticky) {
+		padding-top: 66px;
+	}*/
 	header a h1:before {
 		content: "Plan für ";
 	}
@@ -452,7 +477,6 @@ footer {
 /* Mobile browsers/narrow windows */
 @media screen and (max-width: 540px) { 
 	span.long { display: none; }
-	span.short { display: unset; }
 	
 	#error span {
 		font-size: 1.3em;

@@ -28,7 +28,8 @@ window.addEventListener("DOMContentLoaded", function(e) {
 		tableContainer.className = "noSubst";
 	}
 
-	document.body.className = "loading";
+	document.body.classList.remove("noscript");
+	document.body.classList.add("loading");
 }, false);
 
 window.addEventListener("load", function(e) {
@@ -57,17 +58,21 @@ function pad(num, size) {
 var currentWeek = 0;
 function navigateToPreviousWeek() {
 	console.log("Old week: " + currentWeek);
+	document.body.classList.remove("page" + currentWeek);
+
 	currentWeek = Math.max(0, currentWeek-1);
 	console.log("New week: " + currentWeek);
 	
-	document.body.className = "page" + currentWeek;
+	document.body.classList.add("page" + currentWeek);
 }
 function navigateToNextWeek() {
 	console.log("Old week: " + currentWeek);
+	document.body.classList.remove("page" + currentWeek);
+
 	currentWeek = Math.min(currentWeek+1, 2);
 	console.log("New week: " + currentWeek);
 	
-	document.body.className = "page" + currentWeek;
+	document.body.classList.add("page" + currentWeek);
 }
 
 window.onerror = error;
