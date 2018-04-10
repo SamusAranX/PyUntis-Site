@@ -1,0 +1,16 @@
+{
+	"name": "Vertretungsplan",
+	"short_name": "Plan",
+	"lang": "de-DE",
+	"start_url": "/",
+	"display": "standalone",
+	"orientation": "any",
+	"theme_color": "#183152",
+	"icons": [
+		{
+			"src": "plan_icon.svg",
+			"type": "image/svg+xml"
+		}
+	],
+	"background_color": "#183152"
+}
