@@ -286,6 +286,8 @@ body[class="page2"] #nav-next {
 #table-container .week .days {
 	display: flex;
 	overflow-x: auto;
+
+	perspective: 1400px;
 }
 
 #table-container .week .days .day {
@@ -328,31 +330,59 @@ body[class="page2"] #nav-next {
 #table-container .week .days .day .timeunit.lesson {
 	display: flex;
 }
-#table-container .week .days .day .timeunit.lesson .lesson {
-	background: var(--lighter-bg-color);
-	border: solid 1px var(--bg-color);
-	
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+
+#table-container .week .days .day .timeunit.lesson .lesson-container {
+	position: relative;
 	
 	flex: 1 1 auto;
+
 	padding: 0 10px;
+
+	transition: transform .25s;
 }
-#table-container .week .days .day .timeunit.lesson .lesson:not(:first-child) {
+#table-container .week .days .day .timeunit.lesson:hover > .lesson-container {
+	transform: rotateY(180deg);
+	transform-style: preserve-3d;
+}
+
+#table-container .week .days .day .timeunit.lesson .lesson-container:not(:first-child) {
 	margin-left: 2px;
 }
 
-#table-container .week .days .day .timeunit.lesson .lesson.cancelled {
+#table-container .week .days .day .timeunit.lesson .lesson-container.cancelled {
 	background: var(--cancelled-bg-color);
 	border-color: var(--cancelled-border-color);
 }
-#table-container .week .days .day .timeunit.lesson .lesson.irregular {
+#table-container .week .days .day .timeunit.lesson .lesson-container.irregular {
 	background: var(--irregular-bg-color);
 	border-color: var(--irregular-border-color);
 }
 
-#table-container .week .days .day .timeunit.lesson .lesson span {
+#table-container .week .days .day .timeunit.lesson .lesson-container .lesson {
+	background: var(--lighter-bg-color);
+	border: solid 1px var(--bg-color);
+
+	backface-visibility: hidden;
+	-webkit-backface-visibility: hidden;
+
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	flex: 1 1 auto;
+}
+#table-container .week .days .day .timeunit.lesson .lesson-container .lesson.info {
+	transform: rotateY(180deg);
+}
+
+
+
+#table-container .week .days .day .timeunit.lesson .lesson-container span {
 	font-size: .9em;
 }
 

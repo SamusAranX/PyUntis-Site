@@ -342,10 +342,17 @@ function fillPlan() {
 						timeElement.classList.add("timeunit", "lesson");
 						
 						for (var n = 0; n < lessons.length; n++) {
+							var lessonContainer = document.createElement("div");
+							lessonContainer.classList.add("lesson-container");
+
 							var lesson = lessons[n];
 
-							var lesson_el = document.createElement("div");
-							lesson_el.classList.add("lesson");
+							if (typeof lesson.code !== "undefined" && lesson.code != "") {
+								lessonContainer.classList.add(lesson.code);
+							}
+
+							var lessonElement = document.createElement("div");
+							lessonElement.classList.add("lesson");
 							
 							var subjectSpan = document.createElement("span");
 							subjectSpan.classList.add("subject");
@@ -355,14 +362,28 @@ function fillPlan() {
 							roomSpan.classList.add("room");
 							roomSpan.innerHTML = lesson.room;
 							
-							lesson_el.appendChild(subjectSpan);
-							lesson_el.appendChild(roomSpan);
-
-							if (typeof lesson.code !== "undefined" && lesson.code != "") {
-								lesson_el.classList.add(lesson.code);
-							}
+							lessonElement.appendChild(subjectSpan);
+							lessonElement.appendChild(roomSpan);
 							
-							timeElement.appendChild(lesson_el);
+							lessonContainer.appendChild(lessonElement);
+
+							var lessonInfo = document.createElement("div");
+							lessonInfo.classList.add("lesson", "info");
+							
+							var teacherSpan = document.createElement("span");
+							teacherSpan.classList.add("teacher");
+							teacherSpan.innerHTML = "TEA";
+							
+							var endTimeSpan = document.createElement("span");
+							endTimeSpan.classList.add("endTime");
+							endTimeSpan.innerHTML = "14:45";
+							
+							lessonInfo.appendChild(teacherSpan);
+							lessonInfo.appendChild(endTimeSpan);
+
+							lessonContainer.appendChild(lessonInfo);
+
+							timeElement.appendChild(lessonContainer);
 						}
 					} else {
 						timeElement.classList.add("timeunit", "free");
