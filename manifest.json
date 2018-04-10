@@ -2,7 +2,7 @@
 	"name": "Vertretungsplan",
 	"short_name": "Plan",
 	"lang": "de-DE",
-	"start_url": "/",
+	"start_url": "./",
 	"display": "standalone",
 	"orientation": "any",
 	"theme_color": "#183152",
