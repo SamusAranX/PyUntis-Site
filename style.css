@@ -298,7 +298,7 @@ body[class="page2"] #nav-next {
 	font-stretch: expanded;
 	
 	margin: 1px 0;
-	min-width: 100px;
+	min-width: 120px;
 	
 	position: relative;
 	
@@ -329,6 +329,7 @@ body[class="page2"] #nav-next {
 
 #table-container .week .days .day .timeunit.lesson {
 	display: flex;
+	/*transition: transform .25s;*/
 }
 
 #table-container .week .days .day .timeunit.lesson .lesson-container {
@@ -336,34 +337,27 @@ body[class="page2"] #nav-next {
 	
 	flex: 1 1 auto;
 
+	min-width: 54px;
+
 	padding: 0 10px;
 
 	transition: transform .25s;
+	transform-style: preserve-3d;
 }
 #table-container .week .days .day .timeunit.lesson:hover > .lesson-container {
-	transform: rotateY(180deg);
-	transform-style: preserve-3d;
+	transform: rotateX(180deg);
 }
 
 #table-container .week .days .day .timeunit.lesson .lesson-container:not(:first-child) {
 	margin-left: 2px;
 }
 
-#table-container .week .days .day .timeunit.lesson .lesson-container.cancelled {
-	background: var(--cancelled-bg-color);
-	border-color: var(--cancelled-border-color);
-}
-#table-container .week .days .day .timeunit.lesson .lesson-container.irregular {
-	background: var(--irregular-bg-color);
-	border-color: var(--irregular-border-color);
-}
-
 #table-container .week .days .day .timeunit.lesson .lesson-container .lesson {
 	background: var(--lighter-bg-color);
 	border: solid 1px var(--bg-color);
 
-	backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
 
 	position: absolute;
 	top: 0;
@@ -377,7 +371,34 @@ body[class="page2"] #nav-next {
 	flex: 1 1 auto;
 }
 #table-container .week .days .day .timeunit.lesson .lesson-container .lesson.info {
-	transform: rotateY(180deg);
+	transform: rotateX(180deg);
+}
+#table-container .week .days .day .timeunit.lesson .lesson-container .flip-box {
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+
+	background: red;
+
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+
+	display: block;
+}
+#table-container .week .days .day .timeunit.lesson .lesson-container .flip-box:checked {
+	background: green;
+}
+
+#table-container .week .days .day .timeunit.lesson .lesson-container.cancelled .lesson {
+	background: var(--cancelled-bg-color);
+	border-color: var(--cancelled-border-color);
+}
+#table-container .week .days .day .timeunit.lesson .lesson-container.irregular .lesson {
+	background: var(--irregular-bg-color);
+	border-color: var(--irregular-border-color);
 }
 
 

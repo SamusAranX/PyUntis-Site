@@ -21,18 +21,19 @@
 		<script src="core.js"></script>
 	</head>
 	<body class="noscript">
-		<template>
-			<div class="timeunit lesson" id="timeunit-lesson">
-				<div class="lesson-container">
-					<div class="lesson">
-						<span class="subject"></span>
-						<span class="room"></span>
-					</div>
-					<div class="lesson info">
-						<span class="teacher"></span>
-						<span class="endTime"></span>
-					</div>
+		<template id="lesson-container">
+			<div class="lesson-container">
+				<div class="lesson">
+					<span class="subject"></span>
+					<span class="room"></span>
 				</div>
+				<div class="lesson info">
+					<!-- <span class="teacher"></span> -->
+					<span class="startTime"></span>
+					<span class="endTime"></span>
+				</div>
+				<input type="checkbox" class="flip-box" />
+				<!-- TODO: Checkbox z-index -->
 			</div>
 		</template>
 
