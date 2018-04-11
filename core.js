@@ -254,8 +254,7 @@ function fillPlan() {
 	console.log("fillPlan", planJSON);
 
 	var templateLC = document.querySelector("template#lesson-container");
-
-
+	var templateTU = document.querySelector("template#timeunit");
 
 	var tcontainer = document.getElementById("table-container");
 	var todayDate = new Date();
@@ -340,16 +339,15 @@ function fillPlan() {
 						continue;
 
 					var lessons = day[timeunit.startTimeUntis];
-					var timeElement = document.createElement("div");
+					var timeElement = document.importNode(templateTU.content, true);
 					if(typeof lessons !== "undefined") {
 						firstLessonFound = true;
-						timeElement.classList.add("timeunit", "lesson");
+						timeElement.querySelector(".timeunit").classList.add("lesson");
 
 						dayElement.dataset.num = Math.max(dayElement.dataset.num || 0, lessons.length);
 						
 						for (var n = 0; n < lessons.length; n++) {
 							var lessonContainer = document.importNode(templateLC.content, true);
-							console.log(lessonContainer);
 
 							var lesson = lessons[n];
 
@@ -364,8 +362,6 @@ function fillPlan() {
 							var startTimeElement = lessonContainer.querySelector(".startTime");
 							var endTimeElement = lessonContainer.querySelector(".endTime");
 
-							console.log(lesson);
-
 							if (teacherElement != null)
 								teacherElement.innerHTML = "TEA";
 
@@ -375,10 +371,11 @@ function fillPlan() {
 							if (endTimeElement != null)
 								endTimeElement.innerHTML = lesson.endTimeReadable;
 
-							timeElement.appendChild(lessonContainer);
+							// timeElement.querySelector(".timeunit").insertBefore(lessonContainer, timeElement.querySelector(".flip-box"));
+							timeElement.querySelector(".timeunit").appendChild(lessonContainer);
 						}
 					} else {
-						timeElement.classList.add("timeunit", "free");
+						timeElement.querySelector(".timeunit").classList.add("free");
 					}
 					
 					if(firstLessonFound && !timeHeaderAdded) {

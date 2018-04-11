@@ -72,6 +72,15 @@ body {
 	-webkit-text-size-adjust: 100%;
 }
 
+/* Disable any and all default styling checkboxes might have */
+input[type=checkbox] {
+	-webkit-appearance: none;
+	-moz-appearance:    none;
+	appearance:         none;
+	border-radius: 0;
+	border: none;
+}
+
 /* Class names that core.js uses to show/hide UI parts */
 body[class=""] #class-list { display: flex; }
 
@@ -96,9 +105,9 @@ body[class~="loading"] #loading {
 }
 
 /* Not elegant, but it keeps the JS nice and readable */
-body[class="page0"] #table-container .week:nth-child(1) { display: flex; }
-body[class="page1"] #table-container .week:nth-child(2) { display: flex; }
-body[class="page2"] #table-container .week:nth-child(3) { display: flex; }
+body[class="page0"] #table-container .week:nth-of-type(1) { display: flex; }
+body[class="page1"] #table-container .week:nth-of-type(2) { display: flex; }
+body[class="page2"] #table-container .week:nth-of-type(3) { display: flex; }
 
 header, nav {
 	/*position: absolute;*/
@@ -287,7 +296,8 @@ body[class="page2"] #nav-next {
 	display: flex;
 	overflow-x: auto;
 
-	perspective: 1400px;
+	/* Use this to have all columns share a perspective */
+	/*perspective: 1400px;*/
 }
 
 #table-container .week .days .day {
@@ -303,8 +313,11 @@ body[class="page2"] #nav-next {
 	position: relative;
 	
 	text-align: center;
+
+	/* Use this to have each column have its own perspective */
+	perspective: 640px;
 }
-#table-container .week .days .day:not(:last-child) {
+#table-container .week .days .day:not(:last-of-type) {
 	margin-right: 2px;
 }
 
@@ -325,6 +338,7 @@ body[class="page2"] #nav-next {
 #table-container .week .days .day .timeunit {
 	height: 42px;
 	margin: 1px 0;
+	position: relative;
 }
 
 #table-container .week .days .day .timeunit.lesson {
@@ -343,12 +357,10 @@ body[class="page2"] #nav-next {
 
 	transition: transform .25s;
 	transform-style: preserve-3d;
-}
-#table-container .week .days .day .timeunit.lesson:hover > .lesson-container {
-	transform: rotateX(180deg);
+	will-change: transform;
 }
 
-#table-container .week .days .day .timeunit.lesson .lesson-container:not(:first-child) {
+#table-container .week .days .day .timeunit.lesson .lesson-container:not(:first-of-type) {
 	margin-left: 2px;
 }
 
@@ -373,23 +385,25 @@ body[class="page2"] #nav-next {
 #table-container .week .days .day .timeunit.lesson .lesson-container .lesson.info {
 	transform: rotateX(180deg);
 }
-#table-container .week .days .day .timeunit.lesson .lesson-container .flip-box {
-	-moz-appearance: none;
-	-webkit-appearance: none;
-	appearance: none;
-
-	background: red;
+#table-container .week .days .day .timeunit.lesson .flip-box {
+	/*background: rgba(255,0,0,.4);*/
 
 	position: absolute;
+	margin: 0;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	left: 0;
 
 	display: block;
+
+	z-index: 10;
 }
-#table-container .week .days .day .timeunit.lesson .lesson-container .flip-box:checked {
-	background: green;
+#table-container .week .days .day .timeunit.lesson .flip-box:checked {
+	/*background: rgba(0,255,0,.4);*/
+}
+#table-container .week .days .day .timeunit.lesson .flip-box:checked ~ .lesson-container {
+	transform: rotateX(180deg);
 }
 
 #table-container .week .days .day .timeunit.lesson .lesson-container.cancelled .lesson {
@@ -410,7 +424,7 @@ body[class="page2"] #nav-next {
 #table-container .week .days .day .timeunit.free {
 	visibility: hidden;
 }
-#table-container .week .days .day .timeunit:nth-child(2) {
+#table-container .week .days .day .timeunit:nth-of-type(2) {
 	margin-top: 2px;
 }
 
@@ -491,6 +505,10 @@ body.tenfoot {
 
 /* Media Query overrides after this point */
 
+@media (prefers-reduced-motion) {
+	/* Disable animations here */
+}
+
 /* Desktop browsers */
 @media screen and (min-width: 541px) {
 	span.short { display: none; }
@@ -570,3 +588,4 @@ body.tenfoot {
 		font-stretch: condensed;
 	}
 }
+
