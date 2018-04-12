@@ -438,7 +438,6 @@ body[class="page2"] #nav-next {
 	z-index: 10;
 }
 
-
 #table-container .week .days .day .timeunit.free {
 	visibility: hidden;
 }
@@ -458,11 +457,6 @@ body[class="page2"] #nav-next {
 	font-size: 1.1em;
 	transform: rotate(-90deg);
 }
-/*#table-container .week .days .day .timeunit.holiday span:after {
-	content: "Ferien";
-	display: inline-block;
-	transform: rotate(-90deg);
-}*/
 
 /* Timeunit/substitution headers and footers with start and end time */
 #table-container .week .days .day .timeunit.time {
@@ -541,16 +535,7 @@ body.tenfoot {
 	body {
 		/* CSS variable overrides */
 		--header-height: 40px;
-		/*--nav-height: 26px;
-
-		--info-box-height: 120px;
-		--list-item-height: 30px;
-
-		--day-column-min-width: 120px;
-		--day-holiday-min-height: 250px;
-		--lesson-min-width: 50px;*/
 		--timeunit-header-height: 22px;
-		/*--timeunit-height: 42px;*/
 	}
 	header a h1:before {
 		content: "Plan für ";
