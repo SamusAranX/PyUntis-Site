@@ -395,7 +395,7 @@ body[class="page2"] #nav-next {
 #table-container .week .days .day .timeunit.lesson .lesson-container .lesson span {
 	font-size: .9em;
 
-	transition: .25s ease-in-out;
+	transition: .2s ease-in-out;
 	transition-property: transform, opacity;
 	will-change: transform, opacity;
 }
