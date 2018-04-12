@@ -44,6 +44,7 @@
 * { box-sizing: border-box; }
 body {
 	/* css vars, heck yeah */
+	/* colors */
 	--bg-color: hsl(214, 55%, 21%);
 	--bg-color-darker: hsl(214, 55%, 17%);
 	--nav-bg-color: hsla(214, 55%, 13%, 0.4);
@@ -57,6 +58,19 @@ body {
 	--cancelled-border-color: hsl(3, 100%, 33%);
 	--irregular-bg-color: hsl(145, 70%, 50%);
 	--irregular-border-color: hsl(145, 70%, 33%);
+
+	/* element sizes */
+	--header-height: 56px;
+	--nav-height: 26px;
+
+	--info-box-height: 120px;
+	--list-item-height: 30px;
+
+	--day-column-min-width: 120px;
+	--day-holiday-min-height: 250px;
+	--lesson-min-width: 50px;
+	--timeunit-header-height: 24px;
+	--timeunit-height: 42px;
 
 	background: var(--bg-color);
 	color: var(--bright-bg-color);
@@ -113,9 +127,6 @@ header a, nav a {
 }
 
 html:not(.m_csspositionsticky) header, html:not(.m_csspositionsticky) nav {
-	/*left: 0;*/
-	/*right: 0;*/
-
 	position: relative;
 }
 html:not(.m_csspositionsticky) nav {
@@ -132,7 +143,7 @@ header::after {
 	top: 0;
 	left: 0;
 	right: 0;
-	height: 82px; /* header height + nav height */
+	height: calc(var(--header-height) + var(--nav-height)); /* header height + nav height */
 
 	background: linear-gradient(to bottom, var(--bg-color) 0%, var(--bg-color-darker) 100%);
 	box-shadow: 0 0 4px rgba(0,0,0,.8);
@@ -152,8 +163,8 @@ header a h1:before {
 }
 header a h1 {
 	font-stretch: expanded;
-	height: 56px;
-	line-height: 56px;
+	height: var(--header-height);
+	line-height: var(--header-height);
 	margin: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -163,9 +174,9 @@ header a h1 {
 /* Navigation bar */
 nav {
 	display: flex;
-	height: 26px;
-	line-height: 28px;
-	top: 56px;
+	height: var(--nav-height);
+	line-height: calc(var(--nav-height) + 2px);
+	top: var(--header-height);
 }
 nav a {
 	cursor: pointer;
@@ -207,7 +218,7 @@ body[class="page2"] #nav-next {
 	color: white;
 	display: none;
 	flex-direction: column;
-	height: 120px;
+	height: var(--info-box-height);
 	justify-content: center;
 }
 #error span, #loading span, #noscript span {
@@ -240,10 +251,10 @@ body[class="page2"] #nav-next {
 	border: solid 1px var(--bg-color);
 	color: var(--bright-bg-color);
 	flex: 1 0 auto;
-	min-height: 30px;
-	line-height: 30px;
+	min-height: var(--list-item-height);
+	line-height: var(--list-item-height);
 	margin: 1px;
-	min-width: 64px;
+	min-width: calc(var(--list-item-height) * 2.1);
 	text-align: center;
 	text-decoration: none;
 	text-shadow: 0 0 2px rgba(0,0,0,.5), 0 2px 1px rgba(0,0,0,.5);
@@ -299,7 +310,7 @@ body[class="page2"] #nav-next {
 	font-stretch: expanded;
 	
 	margin: 1px 0;
-	min-width: 120px;
+	min-width: var(--day-column-min-width);
 	
 	position: relative;
 	
@@ -341,7 +352,7 @@ body[class="page2"] #nav-next {
 	
 	flex: 1 1 auto;
 
-	min-width: 50px;
+	min-width: var(--lesson-min-width);
 
 	padding: 0 10px;
 
@@ -381,8 +392,8 @@ body[class="page2"] #nav-next {
 #table-container .week .days .day .timeunit.lesson .lesson-container .lesson span {
 	font-size: .9em;
 
+	transition: .25s ease-in-out;
 	transition-property: transform, opacity;
-	transition-duration: .25s;
 	will-change: transform, opacity;
 }
 #table-container .week .days .day .timeunit.lesson .lesson-container .lesson.info span {
@@ -440,7 +451,7 @@ body[class="page2"] #nav-next {
 	flex: 1 0 auto;
 	flex-direction: column;
 	justify-content: center;
-	min-height: 250px;
+	min-height: var(--day-holiday-min-height);
 }
 #table-container .week .days .day .timeunit.holiday span {
 	flex: 0 1 auto;
@@ -457,8 +468,8 @@ body[class="page2"] #nav-next {
 #table-container .week .days .day .timeunit.time {
 	border: solid 1px var(--bg-color);
 	font-stretch: expanded;
-	height: 24px;
-	line-height: 22px;
+	height: var(--timeunit-header-height);
+	line-height: calc(var(--timeunit-header-height) - 2px);
 }
 #table-container .week .days .day .timeunit.time,
 #table-container .week .days .day .timeunit.holiday,
@@ -477,8 +488,8 @@ body[class="page2"] #nav-next {
 #table-container .week .substitution {
 	background: var(--lighter-bg-color);
 	border: solid 1px var(--bg-color);
-	height: 24px;
-	line-height: 23px;
+	height: var(--timeunit-header-height);
+	line-height: calc(var(--timeunit-header-height) - 1px);
 	margin: 1px 1px 1px 0;
 	text-align: center;
 }
@@ -499,8 +510,8 @@ body[class="page2"] #nav-next {
 /* Footer */
 footer {
 	background: var(--nav-bg-color);
-	height: 26px;
-	line-height: 26px;
+	height: var(--nav-height);
+	line-height: var(--nav-height);
 	text-align: center;
 }
 
@@ -512,8 +523,13 @@ body.tenfoot {
 
 /* Media Query overrides after this point */
 
-@media (prefers-reduced-motion) {
-	/* Disable animations here */
+@media screen and (prefers-reduced-motion) {
+	/* Disable all animations here */
+	nav a,
+	#class-list a,
+	#table-container .week .days .day .timeunit.lesson .lesson-container .lesson span {
+		transition: none;
+	}
 }
 
 /* Desktop browsers */
@@ -521,29 +537,29 @@ body.tenfoot {
 	span.short { display: none; }
 }
 
-/* Shrink the header on  */
 @media screen and (orientation: landscape) and (max-width: 820px), screen and (max-width: 540px) {
-	header {
-		height: 40px;
+	body {
+		/* CSS variable overrides */
+		--header-height: 40px;
+		/*--nav-height: 26px;
+
+		--info-box-height: 120px;
+		--list-item-height: 30px;
+
+		--day-column-min-width: 120px;
+		--day-holiday-min-height: 250px;
+		--lesson-min-width: 50px;*/
+		--timeunit-header-height: 22px;
+		/*--timeunit-height: 42px;*/
 	}
-	header::after {
-		height: 66px; /* header height + nav height */
-	}
-	/*html:not(.m_csspositionsticky) {
-		padding-top: 66px;
-	}*/
 	header a h1:before {
 		content: "Plan für ";
 	}
 	header a h1 {
 		font-size: 1.5em;
 		font-stretch: expanded;
-		line-height: 44px; /* 40px + 4px to compensate for glitches */
 	}
 
-	nav {
-		top: 40px; /* override sticky top */
-	}
 	nav a {
 		font-stretch: condensed;
 		font-weight: normal;
@@ -572,13 +588,11 @@ body.tenfoot {
 	}
 	
 	#table-container .week .days .day .timeunit {
-		height: 40px;
 		margin: 1px 0;
 	}
 	
 	#table-container .week .days .day .timeunit.time {
-		height: 22px;
-		line-height: 21.5px;
+		line-height: calc(var(--timeunit-header-height) - 0.5px);
 	}
 
 	#table-container .week .days .day .timeunit.lesson .lesson span {	
