@@ -72,15 +72,6 @@ body {
 	-webkit-text-size-adjust: 100%;
 }
 
-/* Disable any and all default styling checkboxes might have */
-input[type=checkbox] {
-	-webkit-appearance: none;
-	-moz-appearance:    none;
-	appearance:         none;
-	border-radius: 0;
-	border: none;
-}
-
 /* Class names that core.js uses to show/hide UI parts */
 body[class=""] #class-list { display: flex; }
 
@@ -386,7 +377,13 @@ body[class="page2"] #nav-next {
 	transform: rotateX(180deg);
 }
 #table-container .week .days .day .timeunit.lesson .flip-box {
-	/*background: rgba(255,0,0,.4);*/
+	-webkit-appearance: none;
+	-moz-appearance:    none;
+	appearance:         none;
+	border-radius: 0;
+	border: none;
+
+	background: transparent;
 
 	position: absolute;
 	margin: 0;
@@ -395,12 +392,12 @@ body[class="page2"] #nav-next {
 	bottom: 0;
 	left: 0;
 
+	width: 100%;
+	height: 100%;
+
 	display: block;
 
 	z-index: 10;
-}
-#table-container .week .days .day .timeunit.lesson .flip-box:checked {
-	/*background: rgba(0,255,0,.4);*/
 }
 #table-container .week .days .day .timeunit.lesson .flip-box:checked ~ .lesson-container {
 	transform: rotateX(180deg);

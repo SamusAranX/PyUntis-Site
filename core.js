@@ -376,6 +376,7 @@ function fillPlan() {
 						}
 					} else {
 						timeElement.querySelector(".timeunit").classList.add("free");
+						timeElement.querySelector(".flip-box").remove();
 					}
 					
 					if(firstLessonFound && !timeHeaderAdded) {
