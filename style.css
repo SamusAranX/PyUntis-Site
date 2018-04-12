@@ -44,19 +44,19 @@
 * { box-sizing: border-box; }
 body {
 	/* css vars, heck yeah */
-	--bg-color: #183152;
-	--bg-color-darker: #192841;
-	--nav-bg-color: rgba(18, 30, 50, 0.45);
+	--bg-color: hsl(214, 55%, 21%);
+	--bg-color-darker: hsl(214, 55%, 17%);
+	--nav-bg-color: hsla(214, 55%, 13%, 0.4);
 
 	--bright-bg-color: #edf0fc;
 	--lighter-bg-color: #375d81;
-	--error-color: #e74c3c;
-	--highlight-color: #F1C40F;
+	--error-color: hsl(3, 100%, 60%);
+	--highlight-color: hsl(48, 100%, 50%);
 
-	--cancelled-bg-color: #e74c3c;
-	--cancelled-border-color: #c0392b;
-	--irregular-bg-color: #2ecc71;
-	--irregular-border-color: #27ae60;
+	--cancelled-bg-color: hsl(3, 100%, 60%);
+	--cancelled-border-color: hsl(3, 100%, 33%);
+	--irregular-bg-color: hsl(145, 70%, 50%);
+	--irregular-border-color: hsl(145, 70%, 33%);
 
 	background: var(--bg-color);
 	color: var(--bright-bg-color);
@@ -271,7 +271,7 @@ body[class="page2"] #nav-next {
 #table-container {    
 	background: var(--bright-bg-color);
 	display: none;
-	text-shadow: 0 0 2px rgba(0,0,0,.8), 0 2px 1px rgba(0,0,0,.5);
+	text-shadow: 0 0 2px rgba(0,0,0,.8), 0 1px 1px rgba(0,0,0,.66);
 }
 
 #table-container .week {
@@ -304,9 +304,6 @@ body[class="page2"] #nav-next {
 	position: relative;
 	
 	text-align: center;
-
-	/* Use this to have each column have its own perspective */
-	perspective: 640px;
 }
 #table-container .week .days .day:not(:last-of-type) {
 	margin-right: 2px;
@@ -334,21 +331,22 @@ body[class="page2"] #nav-next {
 
 #table-container .week .days .day .timeunit.lesson {
 	display: flex;
-	/*transition: transform .25s;*/
 }
 
 #table-container .week .days .day .timeunit.lesson .lesson-container {
+	background: var(--lighter-bg-color);
+	border: solid 1px var(--bg-color);
+
 	position: relative;
 	
 	flex: 1 1 auto;
 
-	min-width: 54px;
+	min-width: 50px;
 
 	padding: 0 10px;
 
-	transition: transform .25s;
-	transform-style: preserve-3d;
-	will-change: transform;
+	/* Use this to have each lesson container have its own perspective */
+	perspective: 640px;
 }
 
 #table-container .week .days .day .timeunit.lesson .lesson-container:not(:first-of-type) {
@@ -356,12 +354,6 @@ body[class="page2"] #nav-next {
 }
 
 #table-container .week .days .day .timeunit.lesson .lesson-container .lesson {
-	background: var(--lighter-bg-color);
-	border: solid 1px var(--bg-color);
-
-	-webkit-backface-visibility: hidden;
-	backface-visibility: hidden;
-
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -371,11 +363,46 @@ body[class="page2"] #nav-next {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	align-content: center;
 	flex: 1 1 auto;
 }
 #table-container .week .days .day .timeunit.lesson .lesson-container .lesson.info {
-	transform: rotateX(180deg);
+	overflow: hidden;
 }
+#table-container .week .days .day .timeunit.lesson .lesson-container.cancelled {
+	background: var(--cancelled-bg-color);
+	border-color: var(--cancelled-border-color);
+}
+#table-container .week .days .day .timeunit.lesson .lesson-container.irregular {
+	background: var(--irregular-bg-color);
+	border-color: var(--irregular-border-color);
+}
+
+#table-container .week .days .day .timeunit.lesson .lesson-container .lesson span {
+	font-size: .9em;
+
+	transition-property: transform, opacity;
+	transition-duration: .25s;
+	will-change: transform, opacity;
+}
+#table-container .week .days .day .timeunit.lesson .lesson-container .lesson.info span {
+	opacity: 0;
+}
+#table-container .week .days .day .timeunit.lesson .lesson-container .lesson.info span:first-of-type {
+	transform: translateY(-75%);
+}
+#table-container .week .days .day .timeunit.lesson .lesson-container .lesson.info span:last-of-type {
+	transform: translateY(75%);
+}
+#table-container .week .days .day .timeunit.lesson .flip-box:checked ~ .lesson-container .lesson:not(.info) span {
+	opacity: 0;
+	transform: translateZ(-150px);
+}
+#table-container .week .days .day .timeunit.lesson .flip-box:checked ~ .lesson-container .lesson.info span {
+	opacity: 1;
+	transform: translateY(0%);
+}
+
 #table-container .week .days .day .timeunit.lesson .flip-box {
 	-webkit-appearance: none;
 	-moz-appearance:    none;
@@ -399,24 +426,7 @@ body[class="page2"] #nav-next {
 
 	z-index: 10;
 }
-#table-container .week .days .day .timeunit.lesson .flip-box:checked ~ .lesson-container {
-	transform: rotateX(180deg);
-}
 
-#table-container .week .days .day .timeunit.lesson .lesson-container.cancelled .lesson {
-	background: var(--cancelled-bg-color);
-	border-color: var(--cancelled-border-color);
-}
-#table-container .week .days .day .timeunit.lesson .lesson-container.irregular .lesson {
-	background: var(--irregular-bg-color);
-	border-color: var(--irregular-border-color);
-}
-
-
-
-#table-container .week .days .day .timeunit.lesson .lesson-container span {
-	font-size: .9em;
-}
 
 #table-container .week .days .day .timeunit.free {
 	visibility: hidden;
@@ -562,7 +572,7 @@ body.tenfoot {
 	}
 	
 	#table-container .week .days .day .timeunit {
-		height: 36px;
+		height: 40px;
 		margin: 1px 0;
 	}
 	
