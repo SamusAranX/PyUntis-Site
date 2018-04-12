@@ -31,6 +31,27 @@
 		<script src="core.js"></script>
 	</head>
 	<body class="noscript">
+		<template id="timeunit">
+			<div class="timeunit">
+				<input type="checkbox" class="flip-box" />
+				<!-- Lesson containers go here -->
+			</div>
+		</template>
+		
+		<template id="lesson-container">
+			<div class="lesson-container">
+				<div class="lesson">
+					<span class="subject"></span>
+					<span class="room"></span>
+				</div>
+				<div class="lesson info">
+					<!-- <span class="teacher"></span> -->
+					<span class="startTime"></span>
+					<span class="endTime"></span>
+				</div>
+			</div>
+		</template>
+
 		<header><a href="./"><h1 id="site-header"></h1></a></header>
 		<nav>
 			<a id="nav-previous">Vorherige Woche</a>

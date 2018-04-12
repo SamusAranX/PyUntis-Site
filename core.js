@@ -253,6 +253,9 @@ function loadPlan(classID) {
 function fillPlan() {
 	console.log("fillPlan", planJSON);
 
+	var templateLC = document.querySelector("template#lesson-container");
+	var templateTU = document.querySelector("template#timeunit");
+
 	var tcontainer = document.getElementById("table-container");
 	var todayDate = new Date();
 	for (var w = 0; w < planJSON.weeks.length; w++) {
@@ -271,12 +274,12 @@ function fillPlan() {
 			if (typeof day === "undefined")
 				continue;
 
-			var day_el = document.createElement("div");
-			day_el.classList.add("day");
+			var dayElement = document.createElement("div");
+			dayElement.classList.add("day");
 
 			// check if this day is today
 			if(w == 0 && d == todayDate.getDay() - 1)
-				day_el.classList.add("today");
+				dayElement.classList.add("today");
 
 			var dayLongParts = meta.weekDatesLong[w][d].split("<br>");
 			var dayShortParts = meta.weekDatesShort[w][d].split("<br>");
@@ -304,7 +307,7 @@ function fillPlan() {
 			day_header.appendChild(longDaySpan);
 			day_header.appendChild(longDateSpan);
 	
-			day_el.appendChild(day_header);
+			dayElement.appendChild(day_header);
 
 			var dayKeys = Object.keys(day);
 
@@ -322,7 +325,7 @@ function fillPlan() {
 				
 				timeElement.appendChild(holidayNameSpan);
 
-				day_el.appendChild(timeElement);
+				dayElement.appendChild(timeElement);
 			} else {
 				// This is a normal school day, insert regular plan
 				var firstLessonIndex = Math.min.apply(Math, dayKeys);
@@ -336,56 +339,64 @@ function fillPlan() {
 						continue;
 
 					var lessons = day[timeunit.startTimeUntis];
-					var timeElement = document.createElement("div");
+					var timeElement = document.importNode(templateTU.content, true);
 					if(typeof lessons !== "undefined") {
 						firstLessonFound = true;
-						timeElement.classList.add("timeunit", "lesson");
+						timeElement.querySelector(".timeunit").classList.add("lesson");
+
+						dayElement.dataset.num = Math.max(dayElement.dataset.num || 0, lessons.length);
 						
 						for (var n = 0; n < lessons.length; n++) {
+							var lessonContainer = document.importNode(templateLC.content, true);
+
 							var lesson = lessons[n];
 
-							var lesson_el = document.createElement("div");
-							lesson_el.classList.add("lesson");
-							
-							var subjectSpan = document.createElement("span");
-							subjectSpan.classList.add("subject");
-							subjectSpan.innerHTML = lesson.subject;
-							
-							var roomSpan = document.createElement("span");
-							roomSpan.classList.add("room");
-							roomSpan.innerHTML = lesson.room;
-							
-							lesson_el.appendChild(subjectSpan);
-							lesson_el.appendChild(roomSpan);
-
 							if (typeof lesson.code !== "undefined" && lesson.code != "") {
-								lesson_el.classList.add(lesson.code);
+								lessonContainer.querySelector(".lesson-container").classList.add(lesson.code);
 							}
 							
-							timeElement.appendChild(lesson_el);
+							lessonContainer.querySelector(".subject").innerHTML = lesson.subject;
+							lessonContainer.querySelector(".room").innerHTML = lesson.room;
+
+							var teacherElement = lessonContainer.querySelector(".teacher");
+							var startTimeElement = lessonContainer.querySelector(".startTime");
+							var endTimeElement = lessonContainer.querySelector(".endTime");
+
+							if (teacherElement != null)
+								teacherElement.innerHTML = "TEA";
+
+							if (startTimeElement != null)
+								startTimeElement.innerHTML = lesson.startTimeReadable;
+
+							if (endTimeElement != null)
+								endTimeElement.innerHTML = lesson.endTimeReadable;
+
+							// timeElement.querySelector(".timeunit").insertBefore(lessonContainer, timeElement.querySelector(".flip-box"));
+							timeElement.querySelector(".timeunit").appendChild(lessonContainer);
 						}
 					} else {
-						timeElement.classList.add("timeunit", "free");
+						timeElement.querySelector(".timeunit").classList.add("free");
+						timeElement.querySelector(".flip-box").remove();
 					}
 					
 					if(firstLessonFound && !timeHeaderAdded) {
 						var startTimeUnit = document.createElement("div");
 						startTimeUnit.classList.add("timeunit", "time");
 						startTimeUnit.innerHTML = day[firstLessonIndex][0].startTimeReadable;
-						day_el.appendChild(startTimeUnit);
+						dayElement.appendChild(startTimeUnit);
 						timeHeaderAdded = true;
 					}
 					
-					day_el.appendChild(timeElement);
+					dayElement.appendChild(timeElement);
 				}
 				
 				var endTimeUnit = document.createElement("div");
 				endTimeUnit.classList.add("timeunit", "time");
 				endTimeUnit.innerHTML = day[lastLessonIndex][0].endTimeReadable;
-				day_el.appendChild(endTimeUnit);
+				dayElement.appendChild(endTimeUnit);
 			}
 			
-			days_el.appendChild(day_el);
+			days_el.appendChild(dayElement);
 		}
 
 		week_el.appendChild(days_el);
