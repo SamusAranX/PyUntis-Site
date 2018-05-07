@@ -185,7 +185,11 @@ function loadInfo(completion) {
 				debug(meta);
 				
 				var m = moment(meta.lastUpdatedISO8601);
-				document.getElementsByTagName("footer")[0].innerHTML = "Zuletzt aktualisiert: " + m.fromNow();
+				var lastUpdateStr = m.fromNow();
+				if (lastUpdateStr == "Invalid date") {
+					lastUpdateStr = meta.lastUpdated;
+				}
+				document.getElementsByTagName("footer")[0].innerHTML = "Zuletzt aktualisiert: " + lastUpdateStr;
 				
 				completion();
 			} else {
