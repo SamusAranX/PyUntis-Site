@@ -10,6 +10,16 @@ var config = {
 	debug: true
 };
 
+Date.prototype.addDays = function(days) {
+	var dat = new Date(this.valueOf());
+	dat.setDate(dat.getDate() + days);
+	return dat;
+}
+
+Object.prototype.isEmpty = function() {
+	return Object.keys(this).length === 0;
+}
+
 window.addEventListener("DOMContentLoaded", function(e) {
 	header = document.getElementById("site-header");
 	errorMessage = document.getElementsByClassName("message")[0];
@@ -24,7 +34,7 @@ window.addEventListener("DOMContentLoaded", function(e) {
 
 	console.log(config);
 	if (!config.showSubstitutions) {
-		console.log("no subst");
+		debug("no subst");
 		tableContainer.className = "noSubst";
 	}
 
@@ -55,29 +65,43 @@ function pad(num, size) {
 	return s;
 }
 
+var debug = function() {
+	if (config.debug) {
+		console.log.apply(console, arguments);
+	}
+}
+
 var currentWeek = 0;
 function navigateToPreviousWeek() {
-	console.log("Old week: " + currentWeek);
+	debug("Old week: " + currentWeek);
 	document.body.classList.remove("page" + currentWeek);
 
 	currentWeek = Math.max(0, currentWeek-1);
-	console.log("New week: " + currentWeek);
+	debug("New week: " + currentWeek);
 	
 	document.body.classList.add("page" + currentWeek);
 }
 function navigateToNextWeek() {
-	console.log("Old week: " + currentWeek);
+	debug("Old week: " + currentWeek);
 	document.body.classList.remove("page" + currentWeek);
 
 	currentWeek = Math.min(currentWeek+1, 2);
-	console.log("New week: " + currentWeek);
+	debug("New week: " + currentWeek);
+	
+	document.body.classList.add("page" + currentWeek);
+}
+function navigateToWeek(week) {
+	debug("Directly navigating to week " + week);
+	document.body.classList.remove("page" + currentWeek);
+
+	currentWeek = week;
 	
 	document.body.classList.add("page" + currentWeek);
 }
 
 window.onerror = error;
 function error(message, source, lineno, colno, error) {
-	console.log(message, source, lineno, colno, error);
+	debug(message, source, lineno, colno, error);
 	document.body.className = "error";
 	if (typeof source !== "undefined") {
 		var sourceParts = source.split("/");
@@ -98,25 +122,25 @@ function manualError(message) {
 }
 
 function processHash(hash) {
-	console.log("Hash: " + (hash == "" ? "(empty)" : hash));
+	debug("Hash: " + (hash == "" ? "(empty)" : hash));
 	
 	switch(hash) {
 		case "":
-			console.log("Displaying the menu");
+			debug("Displaying the menu");
 			fillInfo();
 			document.body.className = hash;
 			header.innerHTML = config.schoolName;
 			break;
 		
 		case "holidays":
-			console.log("Displaying holidays");
+			debug("Displaying holidays");
 			fillInfo();
 			document.body.className = hash;
 			header.innerHTML = "Ferien";
 			break;
 			
 		default:
-			console.log("Probably a class ID: " + hash);
+			debug("Probably a class ID: " + hash);
 			document.body.className = "page0";
 			tableContainer.innerHTML = "";
 
@@ -130,13 +154,13 @@ function processHash(hash) {
 					manualError("Das ist keine gültige Klassen-ID.");
 				}
 			} else {
-				console.log("meta isn't defined yet");
+				debug("meta isn't defined yet");
 			}
 
 			try {
 				localStorage.setItem("lastViewed", hashInt);
 			} catch(e) {
-				console.log("localStorage.setItem: " + e);
+				debug("localStorage.setItem: " + e);
 			}
 
 			loadPlan(hash);
@@ -157,11 +181,10 @@ function loadInfo(completion) {
 		if(srcElement.readyState == 4) {
 			if(srcElement.status == 200) {
 				meta = JSON.parse(srcElement.responseText);
-				console.log("meta.json loaded");
-				console.log(meta);
+				debug("meta.json loaded");
+				debug(meta);
 				
 				var m = moment(meta.lastUpdatedISO8601);
-				console.log(m);
 				document.getElementsByTagName("footer")[0].innerHTML = "Zuletzt aktualisiert: " + m.fromNow();
 				
 				completion();
@@ -177,7 +200,7 @@ function loadInfo(completion) {
 }
 
 function fillInfo() {
-	console.log("fillInfo");
+	debug("fillInfo");
 
 	var lastViewed = localStorage.getItem("lastViewed");
 	if (lastViewed === null)
@@ -231,7 +254,7 @@ function loadPlan(classID) {
 		if(srcElement.readyState == 4) {
 			if(srcElement.status == 200) {
 				planJSON = JSON.parse(srcElement.responseText);
-				console.log("Plans loaded");
+				debug("Plans loaded");
 				document.body.classList.remove("loading");
 				fillPlan();
 			} else {
@@ -251,13 +274,15 @@ function loadPlan(classID) {
 }
 
 function fillPlan() {
-	console.log("fillPlan", planJSON);
+	debug("fillPlan", planJSON);
 
 	var templateLC = document.querySelector("template#lesson-container");
 	var templateTU = document.querySelector("template#timeunit");
 
 	var tcontainer = document.getElementById("table-container");
 	var todayDate = new Date();
+
+	var startDate = new Date(planJSON.firstDay.iso8601);
 	for (var w = 0; w < planJSON.weeks.length; w++) {
 		var week = planJSON.weeks[w];
 
@@ -270,6 +295,8 @@ function fillPlan() {
 		var weekLength = week.length;
 		for (var d = 0; d < weekLength; d++) {
 			var day = week[d];
+
+			var dayDate = startDate.addDays(w*7 + d);
 
 			if (typeof day === "undefined")
 				continue;
@@ -310,9 +337,12 @@ function fillPlan() {
 			dayElement.appendChild(day_header);
 
 			var dayKeys = Object.keys(day);
+			dayKeys = dayKeys.filter(function(dk) { return dk != "0000" });
 
-			if (dayKeys.includes("holiday")) {
+			if ("holiday" in day) {
 				// This is a holiday, only insert $holidayname element
+				dayElement.classList.add("holiday");
+
 				var holiday = day["holiday"];
 
 				var timeElement = document.createElement("div");
@@ -326,6 +356,9 @@ function fillPlan() {
 				timeElement.appendChild(holidayNameSpan);
 
 				dayElement.appendChild(timeElement);
+			} else if (day.isEmpty()) {
+				// This is an "empty" day
+				dayElement.classList.add("empty");
 			} else {
 				// This is a normal school day, insert regular plan
 				var firstLessonIndex = Math.min.apply(Math, dayKeys);
@@ -505,7 +538,7 @@ function fillPlan() {
 	}
 
 	if (todayDate.getDay() == 6 || todayDate.getDay() == 0) {
-		console.log("It's the weekend. Displaying the next week.");
-		navigateToNextWeek();
+		debug("It's the weekend. Displaying the next week.");
+		navigateToWeek(1);
 	}
 }

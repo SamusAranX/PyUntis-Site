@@ -67,7 +67,7 @@ body {
 	--list-item-height: 30px;
 
 	--day-column-min-width: 120px;
-	--day-holiday-min-height: 250px;
+	--day-holiday-min-height: 200px;
 	--lesson-min-width: 50px;
 	--timeunit-header-height: 24px;
 	--timeunit-height: 42px;
@@ -322,6 +322,9 @@ body[class="page2"] #nav-next {
 #table-container .week .days .day:not(:last-of-type) {
 	margin-right: 2px;
 }
+#table-container .week .days .day.holiday {
+	max-width: var(--day-holiday-min-height);
+}
 
 #table-container .week .days .day .header {
 	display: flex;
@@ -456,6 +459,7 @@ body[class="page2"] #nav-next {
 	min-height: var(--day-holiday-min-height);
 }
 #table-container .week .days .day .timeunit.holiday span {
+	align-self: center;
 	flex: 0 1 auto;
 	font-size: 1.1em;
 	transform: rotate(-90deg);
