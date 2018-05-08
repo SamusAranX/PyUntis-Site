@@ -67,10 +67,16 @@ body {
 	--list-item-height: 30px;
 
 	--day-column-min-width: 120px;
-	--day-holiday-min-height: 200px;
+	--day-holiday-min-height: 300px;
 	--lesson-min-width: 50px;
 	--timeunit-header-height: 24px;
 	--timeunit-height: 42px;
+
+	/* localizable strings */
+	/*--site-name: "Vertretungsplan";
+	--plan-for-long: "Vertretungsplan für " ;
+	--plan-for-short: "Plan für ";
+	--last-updated: "Zuletzt aktualisiert: ";*/
 
 	background: var(--bg-color);
 	color: var(--bright-bg-color);
@@ -91,7 +97,7 @@ body[class=""] #class-list { display: flex; }
 
 body[class$="error"] #error { display: flex; }
 body[class$="error"] header a h1:before, body[class$="noscript"] header a h1:before {
-	content: "Vertretungsplan";
+	content: var(--site-name);
 }
 
 body[class="holidays"] #holiday-list {
@@ -159,7 +165,7 @@ html.m_backdropfilter header::after {
 }
 
 header a h1:before {
-	content: "Vertretungsplan für ";
+	content: var(--plan-for-long);
 }
 header a h1 {
 	font-stretch: expanded;
@@ -325,6 +331,11 @@ body[class="page2"] #nav-next {
 }
 #table-container .week .days .day:not(:last-of-type) {
 	margin-right: 2px;
+}
+
+/* Hide days with nothing in them */
+#table-container .week .days .day.empty {
+	display: none;
 }
 
 #table-container .week .days .day .header {
@@ -516,6 +527,9 @@ footer {
 	line-height: var(--nav-height);
 	text-align: center;
 }
+footer:before {
+	content: var(--last-updated);
+}
 
 /* Ten Foot UI */
 
@@ -546,7 +560,7 @@ body.tenfoot {
 		--timeunit-header-height: 22px;
 	}
 	header a h1:before {
-		content: "Plan für ";
+		content: var(--plan-for-short);
 	}
 	header a h1 {
 		font-size: 1.5em;

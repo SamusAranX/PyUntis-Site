@@ -189,7 +189,7 @@ function loadInfo(completion) {
 				if (lastUpdateStr == "Invalid date") {
 					lastUpdateStr = meta.lastUpdated;
 				}
-				document.getElementsByTagName("footer")[0].innerHTML = "Zuletzt aktualisiert: " + lastUpdateStr;
+				document.getElementsByTagName("footer")[0].innerHTML = lastUpdateStr;
 				
 				completion();
 			} else {
@@ -280,6 +280,14 @@ function loadPlan(classID) {
 function fillPlan() {
 	debug("fillPlan", planJSON);
 
+	var lang = navigator.language;
+	debug(lang);
+
+	var optionsLongWeekday = { weekday: "long" };
+	var optionsLongDate = { year: "numeric", month: "2-digit", day: "2-digit" };
+	var optionsShortWeekday = { weekday: "short" };
+	var optionsShortDate = { month: "2-digit", day: "2-digit" };
+
 	var templateLC = document.querySelector("template#lesson-container");
 	var templateTU = document.querySelector("template#timeunit");
 
@@ -312,22 +320,19 @@ function fillPlan() {
 			if(w == 0 && d == todayDate.getDay() - 1)
 				dayElement.classList.add("today");
 
-			var dayLongParts = meta.weekDatesLong[w][d].split("<br>");
-			var dayShortParts = meta.weekDatesShort[w][d].split("<br>");
-
 			var shortDaySpan = document.createElement("span");
 			var shortDateSpan = document.createElement("span");
 			shortDaySpan.className = "short";
 			shortDateSpan.className = "short";
-			shortDaySpan.innerHTML = dayShortParts[0];
-			shortDateSpan.innerHTML = dayShortParts[1];
+			shortDaySpan.innerHTML = dayDate.toLocaleDateString(lang, optionsShortWeekday);
+			shortDateSpan.innerHTML = dayDate.toLocaleDateString(lang, optionsShortDate);
 
 			var longDaySpan = document.createElement("span");
 			var longDateSpan = document.createElement("span");
 			longDaySpan.className = "long";
 			longDateSpan.className = "long";
-			longDaySpan.innerHTML = dayLongParts[0];
-			longDateSpan.innerHTML = dayLongParts[1];
+			longDaySpan.innerHTML = dayDate.toLocaleDateString(lang, optionsLongWeekday);
+			longDateSpan.innerHTML = dayDate.toLocaleDateString(lang, optionsLongDate);
 
 			var day_header = document.createElement("div");
 			day_header.classList.add("header");

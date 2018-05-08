@@ -20,8 +20,7 @@ PyUntis-Site (amazing name, I know) is an interface for [`PyUntis`](https://gith
 
 ## Requirements
 
-* A web server 
-	* If you're using Apache and you want to hide the Git files, the `RedirectMatch` directive has to be available for the .htaccess file
+* A web server
 
 ## Usage
 
