@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="de">
 	<head>
 		<meta charset="utf-8">
 
@@ -16,14 +16,8 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 		<meta name="msapplication-starturl" content="./">
 
-		<title>Substitution plan</title>
-		<style type="text/css">
-			/* localizable strings */
-			--site-name: "Substitution plan";
-			--plan-for-long: "Substitution plan for " ;
-			--plan-for-short: "Plan for ";
-			--last-updated: "Last updated: ";
-		</style>
+		<title>Vertretungsplan</title>
+		<link rel="stylesheet" href="style-vars.css">
 		<link rel="stylesheet" href="style.css">
 
 		<link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -61,21 +55,21 @@
 
 		<header><a href="./"><h1 id="site-header"></h1></a></header>
 		<nav>
-			<a id="nav-previous">Previous week</a>
-			<a id="nav-menu" href="#">Menu</a>
-			<a id="nav-holidays" href="#holidays">Holidays</a>
-			<a id="nav-next">Next week</a>
+			<a id="nav-previous">Vorherige Woche</a>
+			<a id="nav-menu" href="#">Menü</a>
+			<a id="nav-holidays" href="#holidays">Ferien</a>
+			<a id="nav-next">Nächste Woche</a>
 		</nav>
 		
 		<div id="error">
 			<span>Hier lief etwas schief. 🤒</span>
 			<span class="message"></span>
 			<span class="technical-message"></span>
-			<a class="reload-link" href="#" onclick="location.reload(true)">Reload page</a>
+			<a class="reload-link" href="#" onclick="location.reload(true)">Seite neu laden</a>
 		</div>
 		
 		<div id="loading">
-			<span>⏳ Loading…</span>
+			<span>⏳ Lade Plan…</span>
 		</div>
 		
 		<div id="class-list"></div>
@@ -86,7 +80,7 @@
 
 		<noscript>
 			<div id="noscript">
-				<span>Please enable JavaScript for this page.</span>
+				<span>Bitte aktiviere JavaScript für diese Seite.</span>
 			</div>
 		</noscript>
 		

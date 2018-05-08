@@ -72,12 +72,6 @@ body {
 	--timeunit-header-height: 24px;
 	--timeunit-height: 42px;
 
-	/* localizable strings */
-	/*--site-name: "Vertretungsplan";
-	--plan-for-long: "Vertretungsplan für " ;
-	--plan-for-short: "Plan für ";
-	--last-updated: "Zuletzt aktualisiert: ";*/
-
 	background: var(--bg-color);
 	color: var(--bright-bg-color);
 	font-family: "Eve Sans Neue", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
