@@ -109,7 +109,7 @@ function error(message, source, lineno, colno, error) {
 	} else {
 		technicalMessage.innerHTML = message;
 	}
-	technicalMessage.classList.append("active");
+	technicalMessage.classList.add("active");
 	header.innerHTML = "";
 	/* This navigates the page into a dead end, requiring a reload. */
 }
@@ -313,6 +313,9 @@ function fillPlan() {
 			if (typeof day === "undefined")
 				continue;
 
+			if (day.isEmpty())
+				continue;
+
 			var dayElement = document.createElement("div");
 			dayElement.classList.add("day");
 
@@ -346,7 +349,7 @@ function fillPlan() {
 			dayElement.appendChild(day_header);
 
 			var dayKeys = Object.keys(day);
-			dayKeys = dayKeys.filter(function(dk) { return dk != "0000" });
+			debug(dayKeys);
 
 			if ("holiday" in day) {
 				// This is a holiday, only insert $holidayname element
@@ -359,7 +362,6 @@ function fillPlan() {
 
 				var holidayNameSpan = document.createElement("span");
 				holidayNameSpan.classList.add("name");
-				// holidayNameSpan.dataset["name"] = holiday["name"];
 				holidayNameSpan.innerHTML = holiday["name"];
 				
 				timeElement.appendChild(holidayNameSpan);
@@ -368,10 +370,42 @@ function fillPlan() {
 			} else if (day.isEmpty()) {
 				// This is an "empty" day
 				dayElement.classList.add("empty");
+			} else if (dayKeys.includes("0000")) {
+				// Special case that's documented nowhere
+				// Thanks for nothing, Untis devs
+
+				debug("All-day event");
+
+				var startTimeUnit = document.createElement("div");
+				startTimeUnit.classList.add("timeunit", "time");
+				startTimeUnit.innerHTML = "00:00";
+
+				var lessonContainer = document.importNode(templateLC.content, true);
+				lessonContainer.querySelector(".subject").innerHTML = "Ganztägiges";
+				lessonContainer.querySelector(".room").innerHTML = "Event";
+
+				var startTimeElement = lessonContainer.querySelector(".startTime");
+				var endTimeElement = lessonContainer.querySelector(".endTime");
+				startTimeElement.innerHTML = "00:00";
+				endTimeElement.innerHTML = "23:59";
+
+				var timeElement = document.importNode(templateTU.content, true);
+				timeElement.querySelector(".timeunit").classList.add("lesson");
+				timeElement.querySelector(".timeunit").appendChild(lessonContainer);
+
+				var endTimeUnit = document.createElement("div");
+				endTimeUnit.classList.add("timeunit", "time");
+				endTimeUnit.innerHTML = "23:59";
+
+				dayElement.appendChild(startTimeUnit);
+				dayElement.appendChild(timeElement);
+				dayElement.appendChild(endTimeUnit);
 			} else {
 				// This is a normal school day, insert regular plan
 				var firstLessonIndex = Math.min.apply(Math, dayKeys);
 				var lastLessonIndex = Math.max.apply(Math, dayKeys);
+				var firstLessonKey = firstLessonIndex.toString().padStart(4, "0");
+				var lastLessonKey = lastLessonIndex.toString().padStart(4, "0");
 
 				var firstLessonFound = false;
 				var timeHeaderAdded = false;
@@ -381,6 +415,7 @@ function fillPlan() {
 						continue;
 
 					var lessons = day[timeunit.startTimeUntis];
+
 					var timeElement = document.importNode(templateTU.content, true);
 					if(typeof lessons !== "undefined") {
 						firstLessonFound = true;
@@ -434,7 +469,7 @@ function fillPlan() {
 				
 				var endTimeUnit = document.createElement("div");
 				endTimeUnit.classList.add("timeunit", "time");
-				endTimeUnit.innerHTML = day[lastLessonIndex][0].endTimeReadable;
+				endTimeUnit.innerHTML = day[lastLessonKey][0].endTimeReadable;
 				dayElement.appendChild(endTimeUnit);
 			}
 			
