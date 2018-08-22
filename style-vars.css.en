@@ -1,7 +1,0 @@
-body {
-	/* localizable strings */
-	--site-name: "Substitution plan";
-	--plan-for-long: "Substitution plan for " ;
-	--plan-for-short: "Plan for ";
-	--last-updated: "Last updated: ";
-}

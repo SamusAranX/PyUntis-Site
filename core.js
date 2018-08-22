@@ -151,7 +151,8 @@ function processHash(hash) {
 				if (classIndex > -1) {
 					header.innerHTML = meta.classes.names[classIndex];
 				} else {
-					manualError("Das ist keine gültige Klassen-ID.");
+					manualError(`Die Klasse mit der ID ${hashInt} konnte nicht gefunden werden.`);
+					break;
 				}
 			} else {
 				debug("meta isn't defined yet");
