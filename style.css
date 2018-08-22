@@ -59,6 +59,12 @@ body {
 	--irregular-bg-color: hsl(145, 70%, 50%);
 	--irregular-border-color: hsl(145, 70%, 33%);
 
+	/* text */
+	--site-name: "Vertretungsplan";
+	--plan-for-long: "Vertretungsplan für " ;
+	--plan-for-short: "Plan für ";
+	--last-updated: "Zuletzt aktualisiert: ";
+
 	/* element sizes */
 	--header-height: 56px;
 	--nav-height: 26px;

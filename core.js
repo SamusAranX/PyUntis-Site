@@ -281,8 +281,7 @@ function loadPlan(classID) {
 function fillPlan() {
 	debug("fillPlan", planJSON);
 
-	var lang = navigator.language;
-	debug(lang);
+	var lang = "de";
 
 	var optionsLongWeekday = { weekday: "long" };
 	var optionsLongDate = { year: "numeric", month: "2-digit", day: "2-digit" };
