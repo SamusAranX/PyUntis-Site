@@ -469,7 +469,7 @@ function fillPlan() {
 				
 				var endTimeUnit = document.createElement("div");
 				endTimeUnit.classList.add("timeunit", "time");
-				endTimeUnit.innerHTML = day[lastLessonKey][0].endTimeReadable;
+				endTimeUnit.innerHTML = day[lastLessonIndex][0].endTimeReadable;
 				dayElement.appendChild(endTimeUnit);
 			}
 			
