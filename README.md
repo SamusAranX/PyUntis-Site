@@ -16,8 +16,6 @@ PyUntis-Site (amazing name, I know) is an interface for [`PyUntis`](https://gith
 	* You can link directly to a class's timetable link and it will Just Work™
 	* Not that anyone does that still, but you can drop a bookmark on your iOS homescreen and the site will behave like a webapp
 
-[Try it here!](https://plan.peterwunder.de/example/)
-
 ## Requirements
 
 * A web server
